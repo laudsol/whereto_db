@@ -15,8 +15,8 @@ app.use('/users', users);
 app.use(users);
 
 
-app.listen(port , function(){
-  console.log("Listening on port",port);
-});
+// app.listen(port , function(){
+//   console.log("Listening on port",port);
+// });
 
 module.exports = app;
