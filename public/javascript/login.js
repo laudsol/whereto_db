@@ -73,7 +73,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
           dataType: 'json'
         })
         .done((data) => {
-          window.location.replace("html/map.html");
+          window.location.replace("html/checkin.html");
         })
         .fail(() => {
           console.log('/GET not working');
