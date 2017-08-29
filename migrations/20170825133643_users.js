@@ -5,6 +5,7 @@ exports.up = function(knex, Promise) {
     table.string('first_name',255).notNullable();
     table.string('last_name',255).notNullable();
     table.string('fb_id',255).unique();
+    table.specificType('hashed_password', 'char(60)').notNullable();
   });
 };
 
