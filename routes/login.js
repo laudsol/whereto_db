@@ -6,7 +6,6 @@ const express = require('express');
 const router = express.Router();
 const knex = require('../knex');
 const bodyParser = require('body-parser');
-const cookieSession = require('cookie-session');
 
 router.post('/login', function(req,res,next){
   knex('users')
@@ -25,7 +24,9 @@ router.get('/login/:id', (req, res, next)=>
   knex('users')
   .where('fb_id', req.params.id)
   .then((data) => {
+    debugger;
     req.session.userID=data[0]['id'];
+    console.log(req.session.userID);
     return res.send(data[0]);
   })
   .catch((err)=>{

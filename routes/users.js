@@ -4,6 +4,8 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/users', function(req, res, next) {
+  debugger;
+  console.log('session',req.session);
   knex('users')
     .then(function(result){
       console.log(result);
