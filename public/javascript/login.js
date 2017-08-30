@@ -21,10 +21,7 @@ $(document).ready(function(){
   var loggedin = false;
 
   var userInputs = {
-    first_name: '',
-    last_name: '',
     fb_id: '',
-    hashed_password: ''
    };
 
    $('#login').click(function(){
@@ -35,9 +32,7 @@ $(document).ready(function(){
           if (response.status == "connected" && response.status != undefined){
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
-            userInputs.hashed_password = loginResponse;
             loggedin = true;
-
             return userInputs.fb_id;
           }
       });
@@ -58,7 +53,6 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
-
     $.ajax({
       contentType: 'application/json',
       type: "POST",
@@ -73,15 +67,15 @@ function runRouteAfterLogin(userInputs, loginResponse){
           dataType: 'json'
         })
         .done((data) => {
-          window.location.replace("html/checkin.html");
+          // window.location.replace("html/checkin.html");
         })
         .fail(() => {
-          console.log('/GET not working');
+          console.log('/GET not working OR already exists');
         });
       }
     })
     .fail(() => {
-      console.log('post not working');
+      console.log('post not working OR already exists');
     });
 
 }

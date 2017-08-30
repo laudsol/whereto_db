@@ -7,6 +7,9 @@ const router = express.Router();
 const knex = require('../knex');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
+const FB = require('fb');
+const jwt = require('jsonwebtoken');
+const secret = process.env.SECRET;
 
 router.post('/login', function(req,res,next){
   knex('users')
@@ -20,12 +23,13 @@ router.post('/login', function(req,res,next){
 
 });
 
-router.get('/login/:id', (req, res, next)=>
-{
+router.get('/login/:id', (req, res, next)=>{
   knex('users')
   .where('fb_id', req.params.id)
   .then((data) => {
-    req.session.userID=data[0]['id'];
+    const token = jwt.sign(data, secret);
+    res.cookie('token', token, { httpOnly: true })
+    // req.session.userID=data[0]['id'];
     return res.send(data[0]);
   })
   .catch((err)=>{
