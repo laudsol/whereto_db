@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 
 app.use(cookieSession({
   name: 'session',
-  keys: [process.env.COOKIE_KEY]
+  keys: [process.env.SECRET]
 }));
 
 app.use((req, res, next)=>{
@@ -38,8 +38,8 @@ app.use(users);
 // this route reads if they have cookies when the splash page loads. this info is used to changed to login button text from login to continue ----------------------------------
 app.get('/continue', function(req,res,next){;
   var cookiearray = (Object.keys(req.session));
+  console.log(req.session, cookiearray);
   if (cookiearray.length !== 0){
-
     return res.send("yes cookie")
   }
   else if (cookiearray.length === 0){

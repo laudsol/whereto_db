@@ -21,10 +21,7 @@ $(document).ready(function(){
   var loggedin = false;
 
   var userInputs = {
-    first_name: '',
-    last_name: '',
     fb_id: '',
-    hashed_password: ''
    };
 
    $('#login').click(function(){
@@ -73,7 +70,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
           dataType: 'json'
         })
         .done((data) => {
-          window.location.replace("html/checkin.html");
+          // window.location.replace("html/checkin.html");
         })
         .fail(() => {
           console.log('/GET not working');
