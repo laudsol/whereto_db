@@ -8,6 +8,14 @@ var users = require('./routes/users');
 var app = express();
 var port = process.env.PORT || 3000;
 
+app.use(cookieSession({
+  // name: 'session',
+  resave: false,
+  saveUninitialized: true,
+  // keys: [process.env.SECRET]
+  secret: 'secret string'
+}));
+
 app.use('/',function(req,res,next){
   res.header('Access-Control-Allow-Origin','*');
   res.header('Access-Control-Allow-Headers','*');
@@ -15,13 +23,8 @@ app.use('/',function(req,res,next){
 });
 
 app.use(bodyParser.json());
-// app.use(cookieParser());
+app.use(cookieParser());
 
-app.use(cookieSession({
-  name: 'session',
-  // keys: [process.env.SECRET]
-  secret: 'secret string'
-}));
 
 app.use((req, res, next)=>{
     next();

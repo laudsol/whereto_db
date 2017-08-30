@@ -17,26 +17,14 @@ $(document).ready(function(){
     console.log('/GET not working');
   });
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
   var loggedin = false;
 
   var userInputs = {
     fb_id: '',
    };
 
-
-
-
-
-
-
-
    $('#login').click(function(){
     var access_token;
-    var message = 'here';
-    var id = '10214154060225438';
-    var place = '106039436102339'; //Talin, Estonia.
-    var fblocation = 'Boulder, CO'
 
     var loginResponse;
       checkLoginState();
@@ -55,8 +43,6 @@ $(document).ready(function(){
     }
     if(!loggedin){
       FB.login(function(inResponse){
-        // window.location.replace("html/skillsManager.html");
-        // postToFb(message,id);
         checkLoginState();
         runRouteAfterLogin(userInputs, loginResponse)
 
@@ -64,17 +50,43 @@ $(document).ready(function(){
     }
     else if(loggedin){
       runRouteAfterLogin(userInputs, loginResponse);
-      // postToFb(message,id);
     }
-    //  window.location.replace("html/skillsManager.html")
-    $('#publish').click(function(){
-      console.log(message,id,place);
-      postToFb(message, id, place);
-    });
-    $('#API').click(function(){
-      var place;
+
+    $('#run_search_location').click(function(){
+      fblocation = $('#search_location').val();
       runAPI(access_token, fblocation);
+      function runAPI(access_token, fblocation){
+        $.ajax({
+          contentType: 'application/json',
+          type: "GET",
+          url: `https://graph.facebook.com/search?q=${fblocation}&type=page&access_token=${access_token}`
+        }).done((result)=>{
+          $('.locationList').empty();
+          place = result.data[0].id;
+          console.log(place, result);
+          var locationContainer = $('<div>').addClass('locationContainer');
+          result.data.forEach((el)=>{
+            let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id);
+            locationContainer.append(temp);
+          })
+          $('.locationList').append(locationContainer);
+
+
+          $('.locationList').children().on('click',function(event){
+            var $target = $(event.target);
+            console.log($target.attr('element-id'));
+            var place = ($target.attr('element-id'));
+            var message = 'here';
+            var id = '10214154060225438';
+            postToFb(message, id, place);
+          })
+
+        })
+      }
     });
+
+
+
   });
 
 });
@@ -118,16 +130,4 @@ function postToFb(message, id, place){
       }, function(response){
         console.log(response);
       });
-}
-
-function runAPI(access_token, fblocation){
-  $.ajax({
-    contentType: 'application/json',
-    type: "GET",
-    url: `https://graph.facebook.com/search?q=${fblocation}&type=page&access_token=${access_token}`
-  }).done((result)=>{
-    // console.log(result);
-    place = result.data[0].id;
-    console.log(place);
-  })
 }
