@@ -30,9 +30,9 @@ $(document).ready(function(){
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
           if (response.status == "connected" && response.status != undefined){
+            console.log(response.authResponse.userID);
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
-            userInputs.hashed_password = loginResponse;
             loggedin = true;
 
             return userInputs.fb_id;
