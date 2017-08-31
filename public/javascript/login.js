@@ -25,6 +25,7 @@ $(document).ready(function(){
 
    $('#login').click(function(){
     var access_token;
+    var user_id;
 
     var loginResponse;
       checkLoginState();
@@ -35,6 +36,7 @@ $(document).ready(function(){
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
+            user_id = loginResponse;
             loggedin = true;
 
             return userInputs.fb_id;
@@ -71,16 +73,13 @@ $(document).ready(function(){
           })
           $('.locationList').append(locationContainer);
 
-
           $('.locationList').children().on('click',function(event){
             var $target = $(event.target);
             console.log($target.attr('element-id'));
             var place = ($target.attr('element-id'));
             var message = 'here';
-            var id = '10214154060225438';
-            postToFb(message, id, place);
+            postToFb(message, user_id, place);
           })
-
         })
       }
     });
@@ -119,13 +118,13 @@ function runRouteAfterLogin(userInputs, loginResponse){
     });
 }
 
-function postToFb(message, id, place){
+function postToFb(message, user_id, place){
     FB.api(
-      '/'+id+'/feed',
+      '/'+user_id+'/feed',
       'POST',
       {
         "message" : message,
-        "tags" : id,
+        "tags" : user_id,
         "place": place
       }, function(response){
         console.log(response);
