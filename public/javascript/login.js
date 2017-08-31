@@ -32,7 +32,7 @@ $(document).ready(function(){
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
           if (response.status == "connected" && response.status != undefined){
-            console.log(response.authResponse);
+            // console.log(response.authResponse);
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
@@ -64,11 +64,9 @@ $(document).ready(function(){
           url: `https://graph.facebook.com/search?q=${fblocation}&type=page&access_token=${access_token}`
         }).done((result)=>{
           $('.locationList').empty();
-          place = result.data[0].id;
-          console.log(place, result);
           var locationContainer = $('<div>').addClass('locationContainer');
           result.data.forEach((el)=>{
-            let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id);
+            let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id).attr('place-text',el.name);
             locationContainer.append(temp);
           })
           $('.locationList').append(locationContainer);
@@ -77,8 +75,11 @@ $(document).ready(function(){
             var $target = $(event.target);
             console.log($target.attr('element-id'));
             var place = ($target.attr('element-id'));
-            var message = 'here';
+            var placeText = ($target.attr('place-text'));
+            var route = 'states';
+            var message = 'testing: from my website';
             postToFb(message, user_id, place);
+            postCheckin(placeText, route);
           })
         })
       }
@@ -88,7 +89,6 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
-
     $.ajax({
       contentType: 'application/json',
       type: "POST",
@@ -99,7 +99,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
         $.ajax({
           contentType: 'application/json',
           type: "GET",
-          url: '/login/' + loginResponse,
+          url: '/login/+loginResponse',
           dataType: 'json'
         })
         .done((data) => {
@@ -126,4 +126,23 @@ function postToFb(message, user_id, place){
       }, function(response){
         console.log(response);
       });
+}
+
+function postCheckin(placeText, route){
+  let locationInput = {
+    'name': placeText
+  };
+  $.ajax({
+    contentType: 'application/json',
+    type: "POST",
+    url: `/${route}`,
+    data: JSON.stringify(locationInput),
+    dataType: 'json'
+  })
+  .done((data) => {
+    console.log(data);
+  })
+  .fail((err) => {
+    console.log(err);
+  });
 }

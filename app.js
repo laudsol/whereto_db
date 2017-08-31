@@ -3,10 +3,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('express-session');
 var bodyParser = require('body-parser');
-var login = require('./routes/login');
-var users = require('./routes/users');
 var app = express();
 var port = process.env.PORT || 3000;
+// Routes -----------------------------
+var login = require('./routes/login');
+var users = require('./routes/users');
+var states= require('./routes/states');
+// Routes -----------------------------
 
 app.use(cookieSession({
   // name: 'session',
@@ -34,10 +37,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
-
-// app.use('/users', users);
 app.use(login);
 app.use(users);
+app.use(states);
 
 // this route reads if they have cookies when the splash page loads. this info is used to changed to login button text from login to continue ----------------------------------
 app.get('/continue', function(req,res,next){;

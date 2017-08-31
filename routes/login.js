@@ -21,12 +21,11 @@ router.post('/login', function(req,res,next){
 
 
 
-router.get('/login/:id', (req, res, next)=>
-{
+router.get('/login/:id', (req, res, next)=>{
+  console.log('here',req.params.id);
   knex('users')
   .where('fb_id', req.params.id)
   .then((data) => {
-    // req.session.test=data[0]['id']
     req.session.userID=data[0]['id'];
     console.log('first',req.session.userID);
     return res.send(data[0]);
