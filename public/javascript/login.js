@@ -17,20 +17,20 @@ $(document).ready(function(){
     console.log('/GET not working');
   });
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  var loggedin = false;
-
-  var userInputs = {
-    fb_id: '',
-   };
 
    $('#login').click(function(){
+    var loggedin = false;
+    var userInputs = {
+       fb_id: '',
+     };
     var access_token;
     var user_id;
-
     var loginResponse;
+
       checkLoginState();
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
+        // console.log(response);
           if (response.status == "connected" && response.status != undefined){
             // console.log(response.authResponse);
             access_token = response.authResponse.accessToken;
@@ -43,14 +43,13 @@ $(document).ready(function(){
           }
       });
     }
-    if(!loggedin){
+    if(loggedin === false){
       FB.login(function(inResponse){
         checkLoginState();
         runRouteAfterLogin(userInputs, loginResponse)
-
       },{scope: 'public_profile , publish_actions'})
     }
-    else if(loggedin){
+    else if(loggedin === true){
       runRouteAfterLogin(userInputs, loginResponse);
     }
 
@@ -89,29 +88,46 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
+  console.log(loginResponse);
     $.ajax({
       contentType: 'application/json',
       type: "POST",
       url: '/login',
       data: JSON.stringify(userInputs),
       dataType: 'json',
-      complete: function(){
-        $.ajax({
+      // complete: function(){
+      //   $.ajax({
+      //     contentType: 'application/json',
+      //     type: "GET",
+      //     url: '/login/'+loginResponse,
+      //     dataType: 'json'
+      //   })
+      //   .done((data) => {
+      //     console.log(data);
+      //   })
+      //   .fail(() => {
+      //     console.log('/GET not working');
+      //   });
+      // }
+    })
+    .done((data)=>{
+      console.log(data);
+    })
+    .fail(() => {
+      console.log('post not working');
+      console.log(loginResponse);
+      $.ajax({
           contentType: 'application/json',
           type: "GET",
-          url: '/login/+loginResponse',
+          url: '/login/'+loginResponse,
           dataType: 'json'
         })
         .done((data) => {
-          // window.location.replace("html/checkin.html");
+          console.log(data);
         })
         .fail(() => {
           console.log('/GET not working');
         });
-      }
-    })
-    .fail(() => {
-      console.log('post not working');
     });
 }
 
