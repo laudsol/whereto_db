@@ -30,27 +30,22 @@ $(document).ready(function(){
       checkLoginState();
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
-        // console.log(response);
           if (response.status == "connected" && response.status != undefined){
-            // console.log(response.authResponse);
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
             user_id = loginResponse;
             loggedin = true;
-
+            runRouteAfterLogin(userInputs, loginResponse);
+            console.log('logged in right away');
             return userInputs.fb_id;
+          } else {
+            FB.login(function(inResponse){
+                console.log('logged in after process');
+                runRouteAfterLogin(userInputs, loginResponse)
+              },{scope: 'public_profile , publish_actions'})
           }
       });
-    }
-    if(loggedin === false){
-      FB.login(function(inResponse){
-        checkLoginState();
-        runRouteAfterLogin(userInputs, loginResponse)
-      },{scope: 'public_profile , publish_actions'})
-    }
-    else if(loggedin === true){
-      runRouteAfterLogin(userInputs, loginResponse);
     }
 
     $('#run_search_location').click(function(){
@@ -88,7 +83,7 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
-  console.log(loginResponse);
+  // console.log(loginResponse);
     $.ajax({
       contentType: 'application/json',
       type: "POST",
@@ -115,7 +110,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
     })
     .fail(() => {
       console.log('post not working');
-      console.log(loginResponse);
+      // console.log(loginResponse);
       $.ajax({
           contentType: 'application/json',
           type: "GET",
