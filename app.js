@@ -9,6 +9,9 @@ var port = process.env.PORT || 3000;
 var login = require('./routes/login');
 var users = require('./routes/users');
 var states= require('./routes/states');
+var cities= require('./routes/cities');
+var nationalParks= require('./routes/nationalParks');
+var stateParks= require('./routes/stateParks');
 // Routes -----------------------------
 
 app.use(cookieSession({
@@ -40,6 +43,9 @@ app.use(express.static('public'));
 app.use(login);
 app.use(users);
 app.use(states);
+app.use(cities);
+app.use(nationalParks);
+app.use(stateParks);
 
 // this route reads if they have cookies when the splash page loads. this info is used to changed to login button text from login to continue ----------------------------------
 app.get('/continue', function(req,res,next){;

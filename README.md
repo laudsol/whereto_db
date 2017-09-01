@@ -1,7 +1,7 @@
-States: make an array of States
-Cities: look for ',' followed by a States
-National Parks: search for 'national parks'
-State Parks: search for 'state parks'
+States: make an array of States -DONE
+Cities: look for ',' followed by a States -DONE
+National Parks: search for 'national parks' -DONE
+State Parks: search for 'state parks' -DONE
 National Monument: search for 'national monument'
 HW Exits?
 Rest stops

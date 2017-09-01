@@ -1,3 +1,4 @@
+var user_id;
 $(document).ready(function(){
 
 // THIS CHANGES THE LOGIN BUTTON from login to continue if they aready have cookies (which they get from being logged in)---------------------------------------
@@ -24,24 +25,26 @@ $(document).ready(function(){
        fb_id: '',
      };
     var access_token;
-    var user_id;
+    var fb_id;
     var loginResponse;
 
-      checkLoginState();
+    checkLoginState();
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
           if (response.status == "connected" && response.status != undefined){
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
-            user_id = loginResponse;
+            fb_id = loginResponse;
             loggedin = true;
             runRouteAfterLogin(userInputs, loginResponse);
-            console.log('logged in right away');
             return userInputs.fb_id;
           } else {
-            FB.login(function(inResponse){
-                console.log('logged in after process');
+            FB.login(function(response){
+                access_token = response.authResponse.accessToken;
+                loginResponse = response.authResponse.userID;
+                userInputs.fb_id = loginResponse;
+                fb_id = loginResponse;
                 runRouteAfterLogin(userInputs, loginResponse)
               },{scope: 'public_profile , publish_actions'})
           }
@@ -67,13 +70,14 @@ $(document).ready(function(){
 
           $('.locationList').children().on('click',function(event){
             var $target = $(event.target);
-            console.log($target.attr('element-id'));
             var place = ($target.attr('element-id'));
             var placeText = ($target.attr('place-text'));
             var route = 'states';
+            var keyName = 'state_id'
             var message = 'testing: from my website';
-            postToFb(message, user_id, place);
-            postCheckin(placeText, route);
+            // defineRoute(placeText);
+            // postToFb(message, fb_id, place);
+            postCheckin(placeText, route, user_id);
           })
         })
       }
@@ -83,34 +87,17 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
-  // console.log(loginResponse);
     $.ajax({
       contentType: 'application/json',
       type: "POST",
       url: '/login',
       data: JSON.stringify(userInputs),
       dataType: 'json',
-      // complete: function(){
-      //   $.ajax({
-      //     contentType: 'application/json',
-      //     type: "GET",
-      //     url: '/login/'+loginResponse,
-      //     dataType: 'json'
-      //   })
-      //   .done((data) => {
-      //     console.log(data);
-      //   })
-      //   .fail(() => {
-      //     console.log('/GET not working');
-      //   });
-      // }
     })
     .done((data)=>{
-      console.log(data);
+      user_id = data.id;
     })
     .fail(() => {
-      console.log('post not working');
-      // console.log(loginResponse);
       $.ajax({
           contentType: 'application/json',
           type: "GET",
@@ -118,28 +105,28 @@ function runRouteAfterLogin(userInputs, loginResponse){
           dataType: 'json'
         })
         .done((data) => {
-          console.log(data);
+           user_id = data.id;
         })
         .fail(() => {
-          console.log('/GET not working');
         });
     });
 }
 
-function postToFb(message, user_id, place){
+
+function postToFb(message, fb_id, place){
     FB.api(
-      '/'+user_id+'/feed',
+      '/'+fb_id+'/feed',
       'POST',
       {
         "message" : message,
-        "tags" : user_id,
+        "tags" : fb_id,
         "place": place
       }, function(response){
         console.log(response);
       });
 }
 
-function postCheckin(placeText, route){
+function postCheckin(placeText, route, keyName, user_id){
   let locationInput = {
     'name': placeText
   };
@@ -152,8 +139,50 @@ function postCheckin(placeText, route){
   })
   .done((data) => {
     console.log(data);
+    let inputs = {
+      user_id: user_id
+    }
+    inputs[keyName] = data[0].id;
+    $.ajax({
+      contentType: 'application/json',
+      type: "POST",
+      url: `/users_${route}`,
+      data: JSON.stringify(inputs),
+      dataType: 'json'
+    })
+    .done((data) => {
+      console.log(data);
+    })
+    .fail((err) => {
+      console.log(err);
+    });
   })
   .fail((err) => {
     console.log(err);
   });
+}
+
+function defineRoute(placeText){
+
+  var stateArr = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Federated States of Micronesia','Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
+
+  stateArr.forEach((el)=>{
+    if(placeText.includes(el)){
+      if(el === placeText){
+        route = 'state';
+        keyName = 'state_id'
+      }
+    }
+  })
+
+  if(placeText.includes('State Park')){
+    route = 'stateParks';
+    keyName = 'state_park_id';
+  } else if(placeText.includes('National Park')){
+    route = 'nationalParks';
+    keyName = 'national_park_id';
+  } else {
+    route = 'cities';
+    keyName = 'city_id';
+  }
 }

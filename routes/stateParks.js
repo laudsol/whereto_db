@@ -2,8 +2,8 @@ var express = require('express');
 var knex = require('../knex');
 var router = express.Router();
 
-router.get('/states', function(req, res, next) {
-  knex('states')
+router.get('/stateParks', function(req, res, next) {
+  knex('state_parks')
     .then(function(result){
       console.log(result);
       return res.send(result)
@@ -13,8 +13,8 @@ router.get('/states', function(req, res, next) {
     })
 });
 
-router.post('/states', function(req, res, next) {
-  knex('states')
+router.post('/stateParks', function(req, res, next) {
+  knex('state_parks')
     .insert(req.body, '*')
     .then(function(result){
       console.log(result);
@@ -25,8 +25,8 @@ router.post('/states', function(req, res, next) {
     })
 });
 
-router.post('/users_states', function(req, res, next) {
-  knex('users_states')
+router.post('/users_stateParks', function(req, res, next) {
+  knex('users_state_parks')
     .insert(req.body, '*')
     .then(function(result){
       console.log(result);
