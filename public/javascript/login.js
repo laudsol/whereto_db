@@ -75,9 +75,9 @@ $(document).ready(function(){
             var route = 'states';
             var keyName = 'state_id'
             var message = 'testing: from my website';
-            // defineRoute(placeText);
+            defineRoute(placeText);
             // postToFb(message, fb_id, place);
-            postCheckin(placeText, route, user_id);
+            postCheckin(placeText, route, keyName);
           })
         })
       }
@@ -126,7 +126,7 @@ function postToFb(message, fb_id, place){
       });
 }
 
-function postCheckin(placeText, route, keyName, user_id){
+function postCheckin(placeText, route, keyName){
   let locationInput = {
     'name': placeText
   };
@@ -138,11 +138,11 @@ function postCheckin(placeText, route, keyName, user_id){
     dataType: 'json'
   })
   .done((data) => {
-    console.log(data);
     let inputs = {
       user_id: user_id
     }
     inputs[keyName] = data[0].id;
+    console.log(inputs);
     $.ajax({
       contentType: 'application/json',
       type: "POST",
