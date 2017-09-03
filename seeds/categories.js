@@ -41,10 +41,9 @@ exports.seed = function(knex, Promise) {
         {id: 35, type: 'island'},
         {id: 36, type: 'beach'},
         {id: 37, type: 'zoo'},
-        {id: 38, type: 'fort'}
-        {id: 39, type: 'library'}
+        {id: 38, type: 'fort'},
+        {id: 39, type: 'library'},
         {id: 40, type: 'other'}
-        ,
       ]);
     })
     .then(function(){
