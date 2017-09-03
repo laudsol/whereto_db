@@ -12,6 +12,7 @@ var states= require('./routes/states');
 var cities= require('./routes/cities');
 var nationalParks= require('./routes/nationalParks');
 var stateParks= require('./routes/stateParks');
+var categories= require('./routes/categories');
 // Routes -----------------------------
 
 app.use(cookieSession({
@@ -46,6 +47,7 @@ app.use(states);
 app.use(cities);
 app.use(nationalParks);
 app.use(stateParks);
+app.use(categories);
 
 // this route reads if they have cookies when the splash page loads. this info is used to changed to login button text from login to continue ----------------------------------
 app.get('/continue', function(req,res,next){;
