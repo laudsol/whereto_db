@@ -167,7 +167,7 @@ catetgoryType = catType;
 function getAward(data){
   let assessInputs = {
     'category_id' : data[0].category_id,
-    'user_id' : data[0].user_id
+    'user_id' : user_id
   }
 
   $.ajax({
@@ -178,6 +178,7 @@ function getAward(data){
     dataType: 'json'
   }).done((data)=>{
       var award = defineAward(data)
+      console.log(award);
       let awardInput = {
         type : award
       }
@@ -188,6 +189,21 @@ function getAward(data){
         data: JSON.stringify(awardInput),
         dataType: 'json'
       }).done((data)=>{
+        console.log(data);
+        let awardPost = {
+          user_id : user_id,
+          award_id : data[0].id
+        }
+        $.ajax({
+          contentType: 'application/json',
+          type: "POST",
+          url: '/postaward',
+          data: JSON.stringify(awardPost),
+          dataType: 'json'
+        }).done((data)=>{
+          console.log(data);
+        }).fail((err)=>{
+        })
       }).fail((err)=>{
       })
 
@@ -367,7 +383,7 @@ function defineAward(data){
     if(data.length > 0 && data.length <= 2){
       return 'Beach Badge'
     } else if(data.length > 2){
-      return 'Book Bum'
+      return 'Beach Bum'
     }
   } else if (catetgoryType === 'state'){
     if(data.length >= 2 && data.length <= 10){
@@ -391,10 +407,10 @@ function defineAward(data){
       return '20 alphabetic cities!'
   } else if (catetgoryType === 'city_all_abc'){
     return 'All alphabetic cities!'
-  } else if (catetgoryType === 'city_2_vow'){
-    return 'city with 2 matching vowels'
   } else if (catetgoryType === 'city_3_vow'){
     return 'city with 3 matching vowels'
+  } else if (catetgoryType === 'city_4_vow'){
+    return 'city with 4 matching vowels'
   } else if (catetgoryType === 'city_4_let'){
     return 'city with 4 matching letters'
   } else if (catetgoryType === 'city_5_let'){
