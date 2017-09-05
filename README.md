@@ -47,3 +47,22 @@ Zoo
 Aquarium
 Fort
 Library
+
+AWARDS:
+Cities / 10 letters of alphabet
+Cities / 15 letters of alphabet
+Cities / 20 letters of alphabet
+Cities with all letter of alphabet
+Cities with 3 / 4 same vowels
+Cities with 4 / 5 same letters
+Two States
+Four States
+Six States
+Ten States
+Twenty States
+Thirty States
+Forty States
+Fifty States
+National Park,State Park, Grasslands, Monument, Preserve : Visitor / Frequent Visitor / Buff
+Library: Visitor / Nerd
+Beach: Beach bum

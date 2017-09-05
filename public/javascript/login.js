@@ -128,36 +128,37 @@ function postToFb(message, fb_id, place){
 function postCheckin(placeText){
 
 var catType = defineRoute(placeText);
-  let categoryInput = {
-    category = catType;
+  let catInput = {
+    'category' : catType;
   }
 
   $.ajax({
     contentType: 'application/json',
     type: "GET",
     url: '/category',
-    data: JSON.stringify(catType),
+    data: JSON.stringify(catInput),
     dataType: 'json'
   }).done((data)=>{
-    let locationInput = {
-      'place': placeText,
-      'user_id' : user_id, //get user id
-      'category_id' : data[0], //figure out res object
-    };
-
-    $.ajax({
-      contentType: 'application/json',
-      type: "POST",
-      url: '/place',
-      data: JSON.stringify(locationInput),
-      dataType: 'json'
-    })
-    .done((data) => {
-      console.log(data);
-    })
-    .fail((err) => {
-      console.log(err);
-    });
+    // let locationInput = {
+    //   'place': placeText,
+    //   'user_id' : user_id, //get user id
+    //   'category_id' : data[0], //figure out res object
+    // };
+    //
+    // $.ajax({
+    //   contentType: 'application/json',
+    //   type: "POST",
+    //   url: '/place',
+    //   data: JSON.stringify(locationInput),
+    //   dataType: 'json'
+    // })
+    // .done((data) => {
+    //   console.log(data);
+    // })
+    // .fail((err) => {
+    //   console.log(err);
+    // });
+    console.log(data);
   }).fail((err)=>{
     console.log(err);
   })

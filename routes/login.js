@@ -19,10 +19,7 @@ router.post('/login', function(req,res,next){
 
 });
 
-
-
 router.get('/login/:id', (req, res, next)=>{
-  console.log('here',req.params.id);
   knex('users')
   .where('fb_id', req.params.id)
   .then((data) => {

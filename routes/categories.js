@@ -3,6 +3,7 @@ var knex = require('../knex');
 var router = express.Router();
 
 router.get('/category', function(req, res, next) {
+  console.log(req.body);
   knex('categories')
     .where(req.body.category, 'type')
     .then(function(result){
