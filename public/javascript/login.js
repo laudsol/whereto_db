@@ -1,4 +1,5 @@
 var user_id;
+var catetgoryType;
 $(document).ready(function(){
 
 // THIS CHANGES THE LOGIN BUTTON from login to continue if they aready have cookies (which they get from being logged in)---------------------------------------
@@ -129,75 +130,85 @@ function postCheckin(placeText){
 
 
 var catType = defineRoute(placeText);
-console.log(catType);
+catetgoryType = catType;
   let catInput = {
-    'category' : catType
+    category : catType
   }
-
   $.ajax({
     contentType: 'application/json',
-    type: "GET",
+    type: "POST",
     url: '/category',
     data: JSON.stringify(catInput),
-    dataType: 'json'
+    dataType: 'json',
   }).done((data)=>{
-    console.log(data);
     let locationInput = {
       'place': placeText,
-      'user_id' : user_id, //get user id
-      'category_id' : data[0], //figure out res object
+      'user_id' : user_id,
+      'category_id' : data[0].id
     };
-
-    // $.ajax({
-    //   contentType: 'application/json',
-    //   type: "POST",
-    //   url: '/place',
-    //   data: JSON.stringify(locationInput),
-    //   dataType: 'json'
-    // })
-    // .done((data) => {
-    //   // getAward(catType)// gets data for award table
-    //   console.log(data);
-    // })
-    // .fail((err) => {
-    //   console.log(err);
-    // });
+    $.ajax({
+      contentType: 'application/json',
+      type: "POST",
+      url: '/place',
+      data: JSON.stringify(locationInput),
+      dataType: 'json'
+    })
+    .done((data) => {
+      getAward(data)// gets data for award table
+    })
+    .fail((err) => {
+      console.log(err);
+    });
   }).fail((err)=>{
     console.log(err);
   })
 }
 
-function getAward(category_id, user_id){
-  inputs = {
-    'category_id' : category_id,
-    'user_id' : user_id
+function getAward(data){
+  let assessInputs = {
+    'category_id' : data[0].category_id,
+    'user_id' : data[0].user_id
   }
 
   $.ajax({
     contentType: 'application/json',
-    type: "GET",
-    url: '/category',
-    data: JSON.stringify(inputs),
+    type: "POST",
+    url: '/assessawards',
+    data: JSON.stringify(assessInputs),
     dataType: 'json'
   }).done((data)=>{
-    console.log(data);
+      var award = defineAward(data)
+      let awardInput = {
+        type : award
+      }
+      $.ajax({
+        contentType: 'application/json',
+        type: "POST",
+        url: '/whichaward',
+        data: JSON.stringify(awardInput),
+        dataType: 'json'
+      }).done((data)=>{
+      }).fail((err)=>{
+      })
+
   }).fail((err)=>{
-    console.log(err);
   })
 }
+
+
 
 function defineRoute(placeText){
 
   var stateArr = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Federated States of Micronesia','Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin','Wyoming'];
 
   if(placeText.includes('National Park')){
-    return 'national park'
+    return 'national_park'
   } else if(placeText.includes('State Park')){
-      return 'state park'
+      return 'state_park'
   } else if(placeText.includes('National Forest')){
-      return 'national forest'
+      return 'national_forest'
   } else if(placeText.includes('State Forest')){
-      return 'state forest'
+      return 'state_forest'
   } else if(placeText.includes('National Grassland')){
       return 'national_grasslands'
   } else if(placeText.includes('National Monument')){
@@ -276,23 +287,21 @@ function defineRoute(placeText){
             }
           });
 
-          console.log(letObj);
-
           for (var key in letObj){
             if(vowels.includes(key)){
               if(letObj[key] === 2){
                 console.log('hello');
-                tempVal = 'town_2_vow';
+                tempVal = 'city_2_vow';
               } else if (letObj[key] >= 4){
-                tempVal = 'town_4_vow';
+                tempVal = 'city_4_vow';
               }
             } else {
               if(letObj[key] === 4){
-                tempVal = 'town_4_let';
+                tempVal = 'city_4_let';
               } else if(letObj[key] >= 5){
-                tempVal = 'town_5_let';
+                tempVal = 'city_5_let';
               } else {
-                tempVal = 'town';
+                tempVal = 'city';
               }
             }
           }
@@ -300,5 +309,95 @@ function defineRoute(placeText){
       }
     });
     return tempVal
+  }
+}
+
+
+function defineAward(data){
+
+  if(catetgoryType === 'national_park'){
+    if(data.length > 0 && data.length <= 4){
+      return 'National Park Badge'
+    } else if(data.length > 4 && data.length <= 9){
+      return 'National Park Freqentor'
+    } else if (data.length > 9){
+      return 'National Park Buff'
+    }
+  } else if (catetgoryType === 'state_park'){
+    if(data.length > 0 && data.length <= 4){
+      return 'State Park Badge'
+    } else if(data.length > 4 && data.length <= 9){
+      return 'State Park Freqentor'
+    } else if (data.length > 9){
+      return 'State Park Buff'
+    }
+  } else if (catetgoryType === 'national_grasslands'){
+    if(data.length > 0 && data.length <=2){
+      return 'National Grassland Badge'
+    } else if(data.length > 2 && data.length <= 5){
+      return 'National Grassland Freqentor'
+    } else if (data.length > 5){
+      return 'National Grassland Buff'
+    }
+  } else if (catetgoryType === 'national_monument'){
+    if(data.length > 0 && data.length <= 2){
+      return 'National Monument Badge'
+    } else if(data.length > 2 && data.length <= 5){
+      return 'National Monument Freqentor'
+    } else if (data.length > 5){
+      return 'National Monument Buff'
+    }
+  } else if (catetgoryType === 'national_preserve'){
+    if(data.length > 0 && data.length <= 2){
+      return 'National Preserve Badge'
+    } else if(data.length > 2 && data.length <= 5){
+      return 'National Preserve Freqentor'
+    } else if (data.length > 5){
+      return 'National Preserve Buff'
+    }
+  } else if (catetgoryType === 'library'){
+    if(data.length > 0 && data.length <= 2){
+      return 'Library Badge'
+    } else if(data.length > 2 && data.length <= 5){
+      return 'Book Worm'
+    } else if(data.length > 5){
+      return 'Nerd'
+    }
+  } else if (catetgoryType === 'beach'){
+    if(data.length > 0 && data.length <= 2){
+      return 'Beach Badge'
+    } else if(data.length > 2){
+      return 'Book Bum'
+    }
+  } else if (catetgoryType === 'state'){
+    if(data.length >= 2 && data.length <= 10){
+      return 'States: 2!'
+    } else if(data.length >= 10 && data.length <= 20){
+      return 'States: 10!'
+    } else if(data.length >= 20 && data.length <= 30){
+      return 'States: 20!'
+    } else if(data.length >= 30 && data.length <= 40){
+      return 'States: 30!'
+    } else if(data.length >= 40 && data.length <= 50){
+      return 'States: 40!'
+    } else if(data.length = 50){
+      return 'States: 50!'
+    }
+  } else if (catetgoryType === 'city_10_abc'){
+     return '10 alphabetic cities!'
+  } else if (catetgoryType === 'city_15_abc'){
+      return '15 alphabetic cities!'
+  } else if (catetgoryType === 'city_20_abc'){
+      return '20 alphabetic cities!'
+  } else if (catetgoryType === 'city_all_abc'){
+    return 'All alphabetic cities!'
+  } else if (catetgoryType === 'city_2_vow'){
+    return 'city with 2 matching vowels'
+  } else if (catetgoryType === 'city_3_vow'){
+    return 'city with 3 matching vowels'
+  } else if (catetgoryType === 'city_4_let'){
+    return 'city with 4 matching letters'
+  } else if (catetgoryType === 'city_5_let'){
+    return 'city with 5 matching letters'
   }
 }

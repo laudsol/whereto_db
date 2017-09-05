@@ -15,10 +15,10 @@ exports.seed = function(knex, Promise) {
         {id: 11, type: 'national_recreaction_area'},
         {id: 12, type: 'indian_reservation'},
         {id: 13, type: 'building'},
-        {id: 14, type: 'town_4_let'},
-        {id: 15, type: 'town_5_let'},
-        {id: 16, type: 'town_3_vow'},
-        {id: 17, type: 'town_4_vow'},
+        {id: 14, type: 'city_4_let'},
+        {id: 15, type: 'city_5_let'},
+        {id: 16, type: 'city_3_vow'},
+        {id: 17, type: 'city_4_vow'},
         {id: 18, type: 'lake'},
         {id: 19, type: 'reservoir'},
         {id: 20, type: 'river'},
@@ -41,7 +41,11 @@ exports.seed = function(knex, Promise) {
         {id: 37, type: 'zoo'},
         {id: 38, type: 'fort'},
         {id: 39, type: 'library'},
-        {id: 40, type: 'other'}
+        {id: 40, type: 'other'},
+        {id: 41, type: 'city_10_abc'},
+        {id: 42, type: 'city_15_abc'},
+        {id: 43, type: 'city_20_abc'},
+        {id: 44, type: 'city_all_abc'}
       ]);
     })
     .then(function(){

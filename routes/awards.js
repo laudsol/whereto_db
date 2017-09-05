@@ -14,14 +14,25 @@ router.get('/awards', function(req, res, next) {
     })
 });
 
-router.post('/users_awards', function(req, res, next) {
-  knex('userawards')
-    .insert(req.body, '*')
+router.post('/whichaward', function(req, res, next) {
+  console.log(req.body);
+  knex('awards')
+    .where('type',req.body.type)
     .then(function(result){
       console.log(result);
       return res.send(result)
     }).catch(function(err){
       console.log(err);
+      return res.send(err).status(200);
+    })
+});
+
+router.post('/postaward', function(req, res, next) {
+  knex('users_awards')
+    .insert(req.body, '*')
+    .then(function(result){
+      return res.send(result)
+    }).catch(function(err){
       return res.send(err).status(200);
     })
 });

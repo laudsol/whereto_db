@@ -34,9 +34,10 @@ exports.seed = function(knex, Promise) {
         {id: 30, type: 'National Preserve Frequent Visitor'},
         {id: 31, type: 'National Preserve Buff'},
         {id: 32, type: 'Library Badge'},
-        {id: 33, type: 'Library Nerd'},
-        {id: 34, type: 'Beach Badge'},
-        {id: 35, type: 'Beach Bum'}
+        {id: 33, type: 'Library Worm'},
+        {id: 34, type: 'Nerd'},
+        {id: 35, type: 'Beach Badge'},
+        {id: 36, type: 'Beach Bum'}
       ]);
     })
     .then(function(){
