@@ -75,8 +75,8 @@ $(document).ready(function(){
             var route = 'states';
             var keyName = 'state_id'
             var message = 'testing: from my website';
-            postToFb(message, fb_id, place);
-            // postCheckin(placeText, route, keyName);
+            // postToFb(message, fb_id, place);
+            postCheckin(placeText, route, keyName);
           })
         })
       }
@@ -127,9 +127,11 @@ function postToFb(message, fb_id, place){
 
 function postCheckin(placeText){
 
+
 var catType = defineRoute(placeText);
+console.log(catType);
   let catInput = {
-    'category' : catType;
+    'category' : catType
   }
 
   $.ajax({
@@ -139,12 +141,13 @@ var catType = defineRoute(placeText);
     data: JSON.stringify(catInput),
     dataType: 'json'
   }).done((data)=>{
-    // let locationInput = {
-    //   'place': placeText,
-    //   'user_id' : user_id, //get user id
-    //   'category_id' : data[0], //figure out res object
-    // };
-    //
+    console.log(data);
+    let locationInput = {
+      'place': placeText,
+      'user_id' : user_id, //get user id
+      'category_id' : data[0], //figure out res object
+    };
+
     // $.ajax({
     //   contentType: 'application/json',
     //   type: "POST",
@@ -153,11 +156,30 @@ var catType = defineRoute(placeText);
     //   dataType: 'json'
     // })
     // .done((data) => {
+    //   // getAward(catType)// gets data for award table
     //   console.log(data);
     // })
     // .fail((err) => {
     //   console.log(err);
     // });
+  }).fail((err)=>{
+    console.log(err);
+  })
+}
+
+function getAward(category_id, user_id){
+  inputs = {
+    'category_id' : category_id,
+    'user_id' : user_id
+  }
+
+  $.ajax({
+    contentType: 'application/json',
+    type: "GET",
+    url: '/category',
+    data: JSON.stringify(inputs),
+    dataType: 'json'
+  }).done((data)=>{
     console.log(data);
   }).fail((err)=>{
     console.log(err);
@@ -235,39 +257,48 @@ function defineRoute(placeText){
   } else if(placeText.includes('Library')){
       return 'library'
   } else {
+    let tempVal = 'other'
     stateArr.forEach((el)=>{
-      if(el === placeText){
-        return 'state'
-      } else if (el === ', '+placeText){
-        let letObj = {};
-        let vowels = ['a','e','i','o','u'];
+      if(placeText.includes(el)){
+        if(el === placeText){
+          tempVal = 'state'
+        } else if (placeText.includes(', '+el)){
+          let letObj = {};
+          let vowels = ['a','e','i','o','u'];
 
-        placeText.split('').forEach((el)=>{
-          if(letObj[el]){
-            letObj[el]+=1;
-          } else {
-            letObj[el]=1;
-          }
-        });
+          let cityText = placeText.split(',')[0];
 
-        for (var key in letObj){
-          if(vowels.includes(key]){
-            if(letObj[key] === 3){
-              return town_3_vow
-            } else if (letObj[key] >= 4){
-              return town_4_vow
+          cityText.split('').forEach((el)=>{
+            if(letObj[el]){
+              letObj[el]+=1;
+            } else {
+              letObj[el]=1;
             }
-          } else {
-            if(letObj[key] === 4){
-              return town_4_let
-            } else if(letObj[key] >= 5){
-              return town_5_let
+          });
+
+          console.log(letObj);
+
+          for (var key in letObj){
+            if(vowels.includes(key)){
+              if(letObj[key] === 2){
+                console.log('hello');
+                tempVal = 'town_2_vow';
+              } else if (letObj[key] >= 4){
+                tempVal = 'town_4_vow';
+              }
+            } else {
+              if(letObj[key] === 4){
+                tempVal = 'town_4_let';
+              } else if(letObj[key] >= 5){
+                tempVal = 'town_5_let';
+              } else {
+                tempVal = 'town';
+              }
             }
           }
         }
-      } else {
-        return 'other'
       }
     });
+    return tempVal
   }
 }

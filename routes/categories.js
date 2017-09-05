@@ -3,7 +3,7 @@ var knex = require('../knex');
 var router = express.Router();
 
 router.get('/category', function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   knex('categories')
     .where(req.body.category, 'type')
     .then(function(result){
@@ -27,5 +27,17 @@ router.post('/place', function(req, res, next) {
     })
 });
 
+router.get('/userscategories', function(req, res, next) {
+  knex('users_categories')
+    .where(req.body.id, 'user_id')
+    .where(req.body.category_id, 'category_id')
+    .then(function(result){
+      console.log(result);
+      return res.send(result)
+    }).catch(function(err){
+      console.log(err);
+      return res.send(err).status(200);
+    })
+});
 
 module.exports = router;

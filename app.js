@@ -8,7 +8,8 @@ var port = process.env.PORT || 3000;
 // Routes -----------------------------
 var login = require('./routes/login');
 var users = require('./routes/users');
-var categories= require('./routes/categories');
+var categories = require('./routes/categories');
+var awards = require('./routes/awards');
 // Routes -----------------------------
 
 app.use(cookieSession({
@@ -40,6 +41,7 @@ app.use(express.static('public'));
 app.use(login);
 app.use(users);
 app.use(categories);
+app.use(awards);
 
 // this route reads if they have cookies when the splash page loads. this info is used to changed to login button text from login to continue ----------------------------------
 app.get('/continue', function(req,res,next){;
