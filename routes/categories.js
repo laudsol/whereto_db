@@ -4,6 +4,7 @@ var router = express.Router();
 
 router.get('/category', function(req, res, next) {
   knex('categories')
+    .where(req.body.category, 'type')
     .then(function(result){
       console.log(result);
       return res.send(result)

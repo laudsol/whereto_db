@@ -125,16 +125,9 @@ function postToFb(message, fb_id, place){
       });
 }
 
-function postCheckin(placeText, route, keyName){
+function postCheckin(placeText){
 
 var catType = defineRoute(placeText);
-
-  let locationInput = {
-    'place': placeText,
-    'user_id' : ,
-    'category_id' : ,
-  };
-
   let categoryInput = {
     category = catType;
   }
@@ -142,17 +135,20 @@ var catType = defineRoute(placeText);
   $.ajax({
     contentType: 'application/json',
     type: "GET",
-    url: '/place',
+    url: '/category',
     data: JSON.stringify(catType),
     dataType: 'json'
-  })
-
-
+  }).done((data)=>{
+    let locationInput = {
+      'place': placeText,
+      'user_id' : user_id, //get user id
+      'category_id' : data[0], //figure out res object
+    };
 
     $.ajax({
       contentType: 'application/json',
       type: "POST",
-      url: '/users_categories',
+      url: '/place',
       data: JSON.stringify(locationInput),
       dataType: 'json'
     })
@@ -162,6 +158,9 @@ var catType = defineRoute(placeText);
     .fail((err) => {
       console.log(err);
     });
+  }).fail((err)=>{
+    console.log(err);
+  })
 }
 
 function defineRoute(placeText){
