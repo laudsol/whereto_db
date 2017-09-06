@@ -11,6 +11,10 @@ Colors*/
 
 /*.awardBox*/
 
+body{
+  background-color: #fde3aa;
+}
+
 .awardBox{
   position: absolute;
   top: 180px;
@@ -22,7 +26,8 @@ Colors*/
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background-color: red;
+  background-color: #f38321;
+  color: #66483d;
   text-align: center;
   padding-top: 40px;
   margin: 10px;
@@ -31,7 +36,11 @@ Colors*/
 
 #search_location{
   border-radius: 10px;
-  border-color: red;
+  border-color: #66483d;
+  color: #66483d;
+  background-color: #FFFEE1;
+  /*background-color: red;*/
+  font-size: 15px;
   border-style: solid;
   width: 55%;
   height: 40px;
@@ -49,13 +58,36 @@ Colors*/
   overflow: scroll;
   height: 500px;
   width: 52%;
-  background-color: yellow;
+  background-color: #fde3aa;
   border: 1px solid gray;
 }
 
 .locationBox{
+  min-height: 50px;
   border: 1px solid gray;
   margin: 1px;
+  margin-top: 2px;
   border-radius: 3px;
   text-align: center;
+  background-color: #4c988c;
+}
+
+.navbar{
+  background-color: #f7b52d;
+}
+
+.navbar-header{
+  color: #66483d;
+  font-size: 35px;
+}
+
+#login{
+  background-color: #f16635;
+  margin-left: 2%;
+  margin-bottom: 2%;
+}
+
+#run_search_location{
+  background-color: #4c988c;
+  margin-left: 2%;
 }

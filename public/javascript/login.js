@@ -259,6 +259,7 @@ function getAllAwards(user_id){
 function addAwardsToPage(data){
   $('.awardBox').empty();
   let tempObj = {};
+  // place all types in object as keys and append keys to remove duplicates
   data.forEach((el)=>{
     tempObj[el.type] = 0;
   })
