@@ -36,7 +36,6 @@ $(document).ready(function(){
       FB.getLoginStatus(function(response) {
 
           if (response.status == "connected" && response.status != undefined){
-
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
@@ -52,12 +51,10 @@ $(document).ready(function(){
                 userInputs.fb_id = loginResponse;
                 fb_id = loginResponse;
                 runRouteAfterLogin(userInputs, loginResponse)
-                console.log(user_id);
               },{scope: 'public_profile , publish_actions'})
           }
       });
     }
-
 
     $('#run_search_location').click(function(){
         fblocation = $('#search_location').val();
@@ -91,8 +88,6 @@ $(document).ready(function(){
         }
     });
   });
-
-
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
@@ -116,6 +111,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
         })
         .done((data) => {
            user_id = data.id;
+           console.log(user_id);
            getAllAwards(user_id)
         })
         .fail(() => {
