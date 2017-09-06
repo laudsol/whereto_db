@@ -6,24 +6,6 @@
   });
   FB.AppEvents.logPageView();
 
-  // var message = 'test: posting from my website';
-  // var id = '10214154060225438'
-  //
-  //
-  // function post(message, id){
-  //   console.log('hello');
-  // FB.api(
-  //   '/'+id+'/feed',
-  //   'POST',
-  //   {
-  //     "message" : message,
-  //     "tags" : id
-  //   });
-  // };
-  //
-  // post(message,id);
-
-
 };
 (function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];

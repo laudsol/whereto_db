@@ -6,10 +6,8 @@ var router = express.Router();
 router.get('/users', function(req, res, next) {
   knex('users')
     .then(function(result){
-      console.log(result);
       return res.send(result)
     }).catch(function(err){
-      console.log(err);
       return res.send(err).status(200);
     })
 });

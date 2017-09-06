@@ -24,7 +24,6 @@ router.get('/login/:id', (req, res, next)=>{
   .where('fb_id', req.params.id)
   .then((data) => {
     req.session.userID=data[0]['id'];
-    console.log('first',req.session.userID);
     return res.send(data[0]);
   })
   .catch((err)=>{

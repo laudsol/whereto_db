@@ -14,7 +14,6 @@ router.post('/category', function(req, res, next) {
 });
 
 router.post('/place', function(req, res, next) {
-  console.log(req.body);
   knex('users_categories')
     .insert(req.body, '*')
     .then(function(result){
@@ -31,7 +30,6 @@ router.post('/assessawards', function(req, res, next) {
     .then(function(result){
       return res.send(result)
     }).catch(function(err){
-      console.log(err);
       return res.send(err).status(200);
     })
 });

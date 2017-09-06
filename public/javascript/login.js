@@ -18,9 +18,11 @@ $(document).ready(function(){
     .fail(() => {
     console.log('/GET not working');
   });
-// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
    $('#login').click(function(){
+
     var loggedin = false;
     var userInputs = {
        fb_id: '',
@@ -32,7 +34,9 @@ $(document).ready(function(){
     checkLoginState();
     function checkLoginState() {
       FB.getLoginStatus(function(response) {
+
           if (response.status == "connected" && response.status != undefined){
+
             access_token = response.authResponse.accessToken;
             loginResponse = response.authResponse.userID;
             userInputs.fb_id = loginResponse;
@@ -41,48 +45,53 @@ $(document).ready(function(){
             runRouteAfterLogin(userInputs, loginResponse);
             return userInputs.fb_id;
           } else {
+
             FB.login(function(response){
                 access_token = response.authResponse.accessToken;
                 loginResponse = response.authResponse.userID;
                 userInputs.fb_id = loginResponse;
                 fb_id = loginResponse;
                 runRouteAfterLogin(userInputs, loginResponse)
+                console.log(user_id);
               },{scope: 'public_profile , publish_actions'})
           }
       });
     }
 
-    $('#run_search_location').click(function(){
-      fblocation = $('#search_location').val();
-      runAPI(access_token, fblocation);
-      function runAPI(access_token, fblocation){
-        $.ajax({
-          contentType: 'application/json',
-          type: "GET",
-          url: `https://graph.facebook.com/search?q=${fblocation}&type=page&access_token=${access_token}`
-        }).done((result)=>{
-          $('.locationList').empty();
-          var locationContainer = $('<div>').addClass('locationContainer');
-          result.data.forEach((el)=>{
-            let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id).attr('place-text',el.name);
-            locationContainer.append(temp);
-          })
-          $('.locationList').append(locationContainer);
 
-          $('.locationList').children().on('click',function(event){
-            var $target = $(event.target);
-            var place = ($target.attr('element-id'));
-            var placeText = ($target.attr('place-text'));
-            var route = 'states';
-            var keyName = 'state_id'
-            var message = 'testing: from my website';
-            // postToFb(message, fb_id, place);
-            postCheckin(placeText, route, keyName);
+    $('#run_search_location').click(function(){
+        fblocation = $('#search_location').val();
+        runAPI(access_token, fblocation);
+        function runAPI(access_token, fblocation){
+          $.ajax({
+            contentType: 'application/json',
+            type: "GET",
+            url: `https://graph.facebook.com/search?q=${fblocation}&type=page&access_token=${access_token}`
+          }).done((result)=>{
+            $('.locationList').empty();
+            var locationContainer = $('<div>').addClass('locationContainer');
+            result.data.forEach((el)=>{
+              let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id).attr('place-text',el.name);
+              locationContainer.append(temp);
+            })
+            $('.locationList').append(locationContainer);
+
+            $('.locationList').children().on('click',function(event){
+              $('.locationList').empty();
+              var $target = $(event.target);
+              var place = ($target.attr('element-id'));
+              var placeText = ($target.attr('place-text'));
+              var route = 'states';
+              var keyName = 'state_id'
+              var message = 'testing: from my website';
+              // postToFb(message, fb_id, place);
+              postCheckin(placeText, route, keyName);
+            })
           })
-        })
-      }
+        }
     });
   });
+
 
 });
 
@@ -96,6 +105,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
     })
     .done((data)=>{
       user_id = data.id;
+      getAllAwards(user_id)
     })
     .fail(() => {
       $.ajax({
@@ -106,6 +116,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
         })
         .done((data) => {
            user_id = data.id;
+           getAllAwards(user_id)
         })
         .fail(() => {
         });
@@ -178,7 +189,6 @@ function getAward(data){
     dataType: 'json'
   }).done((data)=>{
       var award = defineAward(data)
-      console.log(award);
       let awardInput = {
         type : award
       }
@@ -189,7 +199,6 @@ function getAward(data){
         data: JSON.stringify(awardInput),
         dataType: 'json'
       }).done((data)=>{
-        console.log(data);
         let awardPost = {
           user_id : user_id,
           award_id : data[0].id
@@ -201,7 +210,7 @@ function getAward(data){
           data: JSON.stringify(awardPost),
           dataType: 'json'
         }).done((data)=>{
-          console.log(data);
+          getAllAwards(user_id);
         }).fail((err)=>{
         })
       }).fail((err)=>{
@@ -211,7 +220,30 @@ function getAward(data){
   })
 }
 
+function getAllAwards(user_id){
+  let getAwards = {
+    user_id : user_id
+  }
+  $.ajax({
+    contentType: 'application/json',
+    type: "POST",
+    url: '/allawards',
+    data: JSON.stringify(getAwards),
+    dataType: 'json'
+  }).done((data)=>{
+    console.log(data);
+    addAwardsToPage(data)
+  }).fail((err)=>{
+  })
+}
 
+function addAwardsToPage(data){
+  $('.awardBox').empty();
+  data.forEach((el)=>{
+    let badge = $('<div>').addClass('award').text(el.type)
+    $('.awardBox').append(badge)
+  })
+}
 
 function defineRoute(placeText){
 
