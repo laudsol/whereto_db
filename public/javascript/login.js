@@ -195,6 +195,7 @@ function getAward(data){
         data: JSON.stringify(awardInput),
         dataType: 'json'
       }).done((data)=>{
+        console.log(data);
         let awardPost = {
           user_id : user_id,
           award_id : data[0].id
