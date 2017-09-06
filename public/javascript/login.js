@@ -132,15 +132,13 @@ function postToFb(message, fb_id, place){
         "tags" : fb_id,
         "place": place
       }, function(response){
-        console.log(response);
       });
 }
 
 function postCheckin(placeText){
 
-
-var catType = defineRoute(placeText);
-catetgoryType = catType;
+  var catType = defineRoute(placeText);
+  catetgoryType = catType;
   let catInput = {
     category : catType
   }
@@ -170,7 +168,6 @@ catetgoryType = catType;
       dataType: 'json'
     })
     .done((data) => {
-      console.log(data);
       if(data.length == 0){
         // post the checkin location in db with category
         $.ajax({
@@ -213,6 +210,7 @@ function getAward(data){
       let awardInput = {
         type : award
       }
+      console.log(award);
       // get award type
       $.ajax({
         contentType: 'application/json',
@@ -225,30 +223,14 @@ function getAward(data){
           user_id : user_id,
           award_id : data[0].id
         }
-        // check for duplicate awards
         $.ajax({
           contentType: 'application/json',
           type: "POST",
-          url: '/preventduplicateaward',
+          url: '/postaward',
           data: JSON.stringify(awardPost),
           dataType: 'json'
         }).done((data)=>{
-          console.log(data);
-          if(Object.keys(data).length == 0){
-            // post award
-            $.ajax({
-              contentType: 'application/json',
-              type: "POST",
-              url: '/postaward',
-              data: JSON.stringify(awardPost),
-              dataType: 'json'
-            }).done((data)=>{
-              getAllAwards(user_id);
-            }).fail((err)=>{
-            })
-          } else {
-            console.log("DUP");
-          }
+          getAllAwards(user_id);
         }).fail((err)=>{
         })
       }).fail((err)=>{
@@ -276,10 +258,16 @@ function getAllAwards(user_id){
 
 function addAwardsToPage(data){
   $('.awardBox').empty();
+  let tempObj = {};
   data.forEach((el)=>{
-    let badge = $('<div>').addClass('award').text(el.type)
-    $('.awardBox').append(badge)
+    tempObj[el.type] = 0;
   })
+
+  for (var key in tempObj){
+    let badge = $('<div>').addClass('award').text(key)
+    $('.awardBox').append(badge)
+  }
+
 }
 
 function defineRoute(placeText){
