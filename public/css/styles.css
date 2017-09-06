@@ -12,8 +12,11 @@ Colors*/
 /*.awardBox*/
 
 .awardBox{
+  position: absolute;
+  top: 35%;
   overflow: scroll;
   height: 500px;
+  /*z-index: 1;*/
 }
 
 .award{
@@ -35,14 +38,25 @@ Colors*/
   height: 40px;
 }
 
-.locationSpacer{
-  width: 45%;
-  float: left;
+.locationList{
+  position: absolute;
+  top: 30%;
+  z-index: 1;
 }
 
-.locationList{
+.locationContainer{
+  border-radius: 5px;
   margin-left: 169px;
   overflow: scroll;
+  height: 500px;
   width: 52%;
   background-color: yellow;
+  border: 1px solid gray;
+}
+
+.locationBox{
+  border: 1px solid gray;
+  margin: 1px;
+  border-radius: 3px;
+  text-align: center;
 }
