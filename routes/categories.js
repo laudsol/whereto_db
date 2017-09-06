@@ -13,6 +13,17 @@ router.post('/category', function(req, res, next) {
     })
 });
 
+router.post('/preventduplicateplace', function(req, res, next) {
+  knex('users_categories')
+  .where('place',req.body.place)
+  .where('user_id',req.body.user_id)
+  .then(function(result){
+    return res.send(result)
+  }).catch(function(err){
+    return res.send(err).status(200);
+  })
+});
+
 router.post('/place', function(req, res, next) {
   knex('users_categories')
     .insert(req.body, '*')
@@ -22,6 +33,7 @@ router.post('/place', function(req, res, next) {
       return res.send(err).status(200);
     })
 });
+
 
 router.post('/assessawards', function(req, res, next) {
   knex('users_categories')

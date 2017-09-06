@@ -60,6 +60,7 @@ $(document).ready(function(){
         fblocation = $('#search_location').val();
         runAPI(access_token, fblocation);
         function runAPI(access_token, fblocation){
+          // search fb api for matching locations
           $.ajax({
             contentType: 'application/json',
             type: "GET",
@@ -91,6 +92,7 @@ $(document).ready(function(){
 });
 
 function runRouteAfterLogin(userInputs, loginResponse){
+    // post user fb token to db
     $.ajax({
       contentType: 'application/json',
       type: "POST",
@@ -103,6 +105,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
       getAllAwards(user_id)
     })
     .fail(() => {
+      // if cannot post, get user id from db for matching fb token
       $.ajax({
           contentType: 'application/json',
           type: "GET",
@@ -121,6 +124,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
 
 
 function postToFb(message, fb_id, place){
+    //post location checking to fb
     FB.api(
       '/'+fb_id+'/feed',
       'POST',
@@ -141,6 +145,7 @@ catetgoryType = catType;
   let catInput = {
     category : catType
   }
+  //get the correct category id
   $.ajax({
     contentType: 'application/json',
     type: "POST",
@@ -153,19 +158,40 @@ catetgoryType = catType;
       'user_id' : user_id,
       'category_id' : data[0].id
     };
+    // prevent duplicate postings of place by user
+    let dupCheckInput = {
+      user_id : user_id,
+      place : placeText
+    }
     $.ajax({
       contentType: 'application/json',
       type: "POST",
-      url: '/place',
-      data: JSON.stringify(locationInput),
+      url: '/preventduplicateplace',
+      data: JSON.stringify(dupCheckInput),
       dataType: 'json'
     })
     .done((data) => {
-      getAward(data)// gets data for award table
+      if(data.length == 0){
+        // post the checkin location in db with category
+        console.log(locationInput);
+        $.ajax({
+          contentType: 'application/json',
+          type: "POST",
+          url: '/place',
+          data: JSON.stringify(locationInput),
+          dataType: 'json'
+        })
+        .done((data) => {
+          getAward(data)// gets data for award table
+        })
+        .fail((err) => {
+          console.log(err);
+        });
+      } 
     })
     .fail((err) => {
       console.log(err);
-    });
+    })
   }).fail((err)=>{
     console.log(err);
   })
@@ -176,7 +202,7 @@ function getAward(data){
     'category_id' : data[0].category_id,
     'user_id' : user_id
   }
-
+  // get all data with matching user & category to assess awards
   $.ajax({
     contentType: 'application/json',
     type: "POST",
@@ -188,6 +214,7 @@ function getAward(data){
       let awardInput = {
         type : award
       }
+      // get award type
       $.ajax({
         contentType: 'application/json',
         type: "POST",
@@ -200,6 +227,7 @@ function getAward(data){
           user_id : user_id,
           award_id : data[0].id
         }
+        // post award
         $.ajax({
           contentType: 'application/json',
           type: "POST",
@@ -221,6 +249,7 @@ function getAllAwards(user_id){
   let getAwards = {
     user_id : user_id
   }
+  // get all users awards for display
   $.ajax({
     contentType: 'application/json',
     type: "POST",
@@ -335,7 +364,6 @@ function defineRoute(placeText){
           for (var key in letObj){
             if(vowels.includes(key)){
               if(letObj[key] === 2){
-                console.log('hello');
                 tempVal = 'city_2_vow';
               } else if (letObj[key] >= 4){
                 tempVal = 'city_4_vow';
