@@ -114,7 +114,6 @@ function runRouteAfterLogin(userInputs, loginResponse){
         })
         .done((data) => {
            user_id = data.id;
-           console.log(user_id);
            getAllAwards(user_id)
         })
         .fail(() => {
@@ -171,9 +170,9 @@ catetgoryType = catType;
       dataType: 'json'
     })
     .done((data) => {
+      console.log(data);
       if(data.length == 0){
         // post the checkin location in db with category
-        console.log(locationInput);
         $.ajax({
           contentType: 'application/json',
           type: "POST",
@@ -187,7 +186,7 @@ catetgoryType = catType;
         .fail((err) => {
           console.log(err);
         });
-      } 
+      }
     })
     .fail((err) => {
       console.log(err);
@@ -222,25 +221,38 @@ function getAward(data){
         data: JSON.stringify(awardInput),
         dataType: 'json'
       }).done((data)=>{
-        console.log(data);
         let awardPost = {
           user_id : user_id,
           award_id : data[0].id
         }
-        // post award
+        // check for duplicate awards
         $.ajax({
           contentType: 'application/json',
           type: "POST",
-          url: '/postaward',
+          url: '/preventduplicateaward',
           data: JSON.stringify(awardPost),
           dataType: 'json'
         }).done((data)=>{
-          getAllAwards(user_id);
+          console.log(data);
+          if(Object.keys(data).length == 0){
+            // post award
+            $.ajax({
+              contentType: 'application/json',
+              type: "POST",
+              url: '/postaward',
+              data: JSON.stringify(awardPost),
+              dataType: 'json'
+            }).done((data)=>{
+              getAllAwards(user_id);
+            }).fail((err)=>{
+            })
+          } else {
+            console.log("DUP");
+          }
         }).fail((err)=>{
         })
       }).fail((err)=>{
       })
-
   }).fail((err)=>{
   })
 }
@@ -257,7 +269,6 @@ function getAllAwards(user_id){
     data: JSON.stringify(getAwards),
     dataType: 'json'
   }).done((data)=>{
-    console.log(data);
     addAwardsToPage(data)
   }).fail((err)=>{
   })

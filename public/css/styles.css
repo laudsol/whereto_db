@@ -13,10 +13,9 @@ Colors*/
 
 .awardBox{
   position: absolute;
-  top: 35%;
+  top: 180px;
   overflow: scroll;
   height: 500px;
-  /*z-index: 1;*/
 }
 
 .award{
@@ -40,8 +39,8 @@ Colors*/
 
 .locationList{
   position: absolute;
-  top: 30%;
   z-index: 1;
+  top: 160px;
 }
 
 .locationContainer{
