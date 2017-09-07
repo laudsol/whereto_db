@@ -39,6 +39,10 @@ body{
   float: left;
 }
 
+.awardBoxAll{
+  
+}
+
 #search_location{
   border-radius: 10px;
   border-color: #66483d;
@@ -76,13 +80,17 @@ body{
   background-color: #4c988c;
 }
 
+/*.navbar .navbar-inverse{
+}*/
+
 .navbar{
-  background-color: #f7b52d;
+  background-color: #f38321;
 }
 
-.navbar-header{
+.nav-brand-text{
   color: #66483d;
   font-size: 35px;
+  text-decoration: none !important;
 }
 
 #login{
