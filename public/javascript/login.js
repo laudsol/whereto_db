@@ -264,8 +264,10 @@ function addAwardsToPage(data){
   })
 
   for (var key in tempObj){
-    let badge = $('<div>').addClass('award').text(key)
-    $('.awardBox').append(badge)
+    let awardText = $('<div>').addClass('awardText').text(key)
+    let awardContainer = $('<div>').addClass('award')
+    awardContainer.append(awardText)
+    $('.awardBox').append(awardContainer)
   }
 
 }

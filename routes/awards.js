@@ -2,6 +2,15 @@ var express = require('express');
 var knex = require('../knex');
 var router = express.Router();
 
+router.get('/everyaward', function(req, res, next) {
+  knex('awards')
+    .then(function(result){
+      return res.send(result)
+    }).catch(function(err){
+      return res.send(err).status(200);
+    })
+})
+
 router.post('/allawards', function(req, res, next) {
   knex('users_awards')
     .where('user_id',req.body.user_id)

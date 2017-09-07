@@ -22,16 +22,25 @@ body{
   height: 500px;
 }
 
+.awardText{
+  display: table-cell;
+  vertical-align: middle;
+  color: #66483d;
+}
+
 .award{
+  display: table;
   width: 110px;
   height: 110px;
   border-radius: 50%;
   background-color: #f38321;
-  color: #66483d;
   text-align: center;
-  padding-top: 40px;
   margin: 10px;
   float: left;
+}
+
+.awardBoxAll{
+  
 }
 
 #search_location{
@@ -71,13 +80,17 @@ body{
   background-color: #4c988c;
 }
 
+/*.navbar .navbar-inverse{
+}*/
+
 .navbar{
-  background-color: #f7b52d;
+  background-color: #f38321;
 }
 
-.navbar-header{
+.nav-brand-text{
   color: #66483d;
   font-size: 35px;
+  text-decoration: none !important;
 }
 
 #login{
