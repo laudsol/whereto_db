@@ -82,7 +82,7 @@ $(document).ready(function(){
               var route = 'states';
               var keyName = 'state_id'
               var message = 'testing: from my website';
-              // postToFb(message, fb_id, place);
+              postToFb(message, fb_id, place);
               postCheckin(placeText, route, keyName);
             })
           })
