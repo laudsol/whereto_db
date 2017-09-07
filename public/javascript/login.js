@@ -69,7 +69,9 @@ $(document).ready(function(){
             $('.locationList').empty();
             var locationContainer = $('<div>').addClass('locationContainer');
             result.data.forEach((el)=>{
-              let temp = $('<div>').addClass('locationBox').text(el.name).attr('element-id',el.id).attr('place-text',el.name);
+              let tempText = $('<div>').addClass('locationText').text(el.name)
+              let temp = $('<div>').addClass('locationBox').attr('element-id',el.id).attr('place-text',el.name);
+              temp.append(tempText);
               locationContainer.append(temp);
             })
             $('.locationList').append(locationContainer);
