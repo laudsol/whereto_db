@@ -40,7 +40,8 @@ body{
 }
 
 .awardBoxAll{
-  
+  overflow: scroll;
+  height: 500px;
 }
 
 #search_location{
