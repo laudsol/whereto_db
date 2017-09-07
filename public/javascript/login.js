@@ -114,7 +114,6 @@ function runRouteAfterLogin(userInputs, loginResponse){
         })
         .done((data) => {
            user_id = data.id;
-           console.log(user_id);
            getAllAwards(user_id)
         })
         .fail(() => {
@@ -133,15 +132,13 @@ function postToFb(message, fb_id, place){
         "tags" : fb_id,
         "place": place
       }, function(response){
-        console.log(response);
       });
 }
 
 function postCheckin(placeText){
 
-
-var catType = defineRoute(placeText);
-catetgoryType = catType;
+  var catType = defineRoute(placeText);
+  catetgoryType = catType;
   let catInput = {
     category : catType
   }
@@ -173,7 +170,6 @@ catetgoryType = catType;
     .done((data) => {
       if(data.length == 0){
         // post the checkin location in db with category
-        console.log(locationInput);
         $.ajax({
           contentType: 'application/json',
           type: "POST",
@@ -187,7 +183,7 @@ catetgoryType = catType;
         .fail((err) => {
           console.log(err);
         });
-      } 
+      }
     })
     .fail((err) => {
       console.log(err);
@@ -222,12 +218,10 @@ function getAward(data){
         data: JSON.stringify(awardInput),
         dataType: 'json'
       }).done((data)=>{
-        console.log(data);
         let awardPost = {
           user_id : user_id,
           award_id : data[0].id
         }
-        // post award
         $.ajax({
           contentType: 'application/json',
           type: "POST",
@@ -240,7 +234,6 @@ function getAward(data){
         })
       }).fail((err)=>{
       })
-
   }).fail((err)=>{
   })
 }
@@ -257,7 +250,6 @@ function getAllAwards(user_id){
     data: JSON.stringify(getAwards),
     dataType: 'json'
   }).done((data)=>{
-    console.log(data);
     addAwardsToPage(data)
   }).fail((err)=>{
   })
@@ -265,10 +257,17 @@ function getAllAwards(user_id){
 
 function addAwardsToPage(data){
   $('.awardBox').empty();
+  let tempObj = {};
+  // place all types in object as keys and append keys to remove duplicates
   data.forEach((el)=>{
-    let badge = $('<div>').addClass('award').text(el.type)
-    $('.awardBox').append(badge)
+    tempObj[el.type] = 0;
   })
+
+  for (var key in tempObj){
+    let badge = $('<div>').addClass('award').text(key)
+    $('.awardBox').append(badge)
+  }
+
 }
 
 function defineRoute(placeText){
@@ -287,7 +286,7 @@ function defineRoute(placeText){
       return 'national_grasslands'
   } else if(placeText.includes('National Monument')){
       return 'national_monument'
-  } else if(placeText.includes('National Preserve')){
+  } else if(placeText.includes('National Preserve') || placeText.includes('Park & Preserve') || placeText.includes('Park and Preserve')){
       return 'national_preserve'
   } else if(placeText.includes('Museum')){
       return 'museum'
@@ -348,9 +347,9 @@ function defineRoute(placeText){
         if(el === placeText){
           tempVal = 'state'
         } else if (placeText.includes(', '+el)){
+          tempVal = 'city';
           let letObj = {};
           let vowels = ['a','e','i','o','u'];
-
           let cityText = placeText.split(',')[0];
 
           cityText.split('').forEach((el)=>{
@@ -363,18 +362,16 @@ function defineRoute(placeText){
 
           for (var key in letObj){
             if(vowels.includes(key)){
-              if(letObj[key] === 2){
-                tempVal = 'city_2_vow';
+              if(letObj[key] === 3){
+                tempVal = 'city_3_vow';
               } else if (letObj[key] >= 4){
                 tempVal = 'city_4_vow';
               }
             } else {
-              if(letObj[key] === 4){
+              if(letObj[key] === 3){
+                tempVal = 'city_3_let';
+              } else if(letObj[key] >= 4){
                 tempVal = 'city_4_let';
-              } else if(letObj[key] >= 5){
-                tempVal = 'city_5_let';
-              } else {
-                tempVal = 'city';
               }
             }
           }
@@ -404,13 +401,21 @@ function defineAward(data){
     } else if (data.length > 9){
       return 'State Park Buff'
     }
+  } else if (catetgoryType === 'indian_reservation'){
+    if(data.length > 0 && data.length <= 4){
+      return 'Indian Reservation Badge'
+    } else if(data.length > 4 && data.length <= 9){
+      return 'Indian Reservation Freqentor'
+    } else if (data.length > 9){
+      return 'Indian Reservation Buff'
+    }
   } else if (catetgoryType === 'national_grasslands'){
     if(data.length > 0 && data.length <=2){
-      return 'National Grassland Badge'
+      return 'National Grasslands Badge'
     } else if(data.length > 2 && data.length <= 5){
-      return 'National Grassland Freqentor'
+      return 'National Grasslands Freqentor'
     } else if (data.length > 5){
-      return 'National Grassland Buff'
+      return 'National Grasslands Buff'
     }
   } else if (catetgoryType === 'national_monument'){
     if(data.length > 0 && data.length <= 2){
@@ -428,13 +433,21 @@ function defineAward(data){
     } else if (data.length > 5){
       return 'National Preserve Buff'
     }
-  } else if (catetgoryType === 'library'){
+  } else if (catetgoryType === 'museum'){
     if(data.length > 0 && data.length <= 2){
-      return 'Library Badge'
+      return 'Museum Badge'
     } else if(data.length > 2 && data.length <= 5){
-      return 'Book Worm'
-    } else if(data.length > 5){
-      return 'Nerd'
+      return 'Museum Freqentor'
+    } else if (data.length > 5){
+      return 'Museum Buff'
+    }
+  } else if (catetgoryType === 'library'){
+  if(data.length > 0 && data.length <= 2){
+    return 'Library Badge'
+  } else if(data.length > 2 && data.length <= 5){
+    return 'Book Worm'
+  } else if(data.length > 5){
+    return 'Nerd'
     }
   } else if (catetgoryType === 'beach'){
     if(data.length > 0 && data.length <= 2){
@@ -443,7 +456,7 @@ function defineAward(data){
       return 'Beach Bum'
     }
   } else if (catetgoryType === 'state'){
-    if(data.length >= 2 && data.length <= 10){
+    if(data.length >= 2 && data.length < 10){
       return 'States: 2!'
     } else if(data.length >= 10 && data.length <= 20){
       return 'States: 10!'
@@ -453,24 +466,37 @@ function defineAward(data){
       return 'States: 30!'
     } else if(data.length >= 40 && data.length <= 50){
       return 'States: 40!'
-    } else if(data.length = 50){
+    } else if(data.length === 50){
       return 'States: 50!'
     }
-  } else if (catetgoryType === 'city_10_abc'){
-     return '10 alphabetic cities!'
-  } else if (catetgoryType === 'city_15_abc'){
-      return '15 alphabetic cities!'
-  } else if (catetgoryType === 'city_20_abc'){
-      return '20 alphabetic cities!'
+  } else if (catetgoryType === 'city'){
+    let letterObj = {};
+    let letterCount = 0;
+    for (i = 0; i < data.length; i++){
+      let temp = data[i]
+      if(!letterObj[temp['place'][0]]){
+        letterObj[temp['place'][0]] = 1;
+        letterCount+=1;
+      }
+    }
+    if(letterCount >=10 && letterCount <15){
+      return '10 alphabetic cities!'
+    } else if(letterCount >=15 && letterCount <20){
+        return '15 alphabetic cities!'
+    } else if(letterCount >=20 && letterCount <26){
+        return '20 alphabetic cities!'
+    } else if(letterCount === 26 ){
+        return 'All alphabetic cities!'
+    }
   } else if (catetgoryType === 'city_all_abc'){
     return 'All alphabetic cities!'
   } else if (catetgoryType === 'city_3_vow'){
     return 'city with 3 matching vowels'
   } else if (catetgoryType === 'city_4_vow'){
-    return 'city with 4 matching vowels'
+    return 'city with 3 matching vowels'
+  } else if (catetgoryType === 'city_3_let'){
+    return 'city with 3 matching letters'
   } else if (catetgoryType === 'city_4_let'){
-    return 'city with 4 matching letters'
-  } else if (catetgoryType === 'city_5_let'){
     return 'city with 5 matching letters'
   }
 }

@@ -13,6 +13,17 @@ router.post('/allawards', function(req, res, next) {
     })
 });
 
+router.post('/preventduplicateaward', function(req, res, next) {
+  knex('users_awards')
+    .where('type',req.body.type)
+    .where('user_id',req.body.user_id)
+    .then(function(result){
+      return res.send(result)
+    }).catch(function(err){
+      return res.send(err).status(200);
+    })
+});
+
 router.post('/whichaward', function(req, res, next) {
   knex('awards')
     .where('type',req.body.type)
