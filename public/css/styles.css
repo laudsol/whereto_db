@@ -16,8 +16,14 @@ body{
   background-color: #fde3aa;
 }
 
+.msgRow{
+  height: 15px;
+}
+
 .instructionMsg{
   position: relative;
+  text-align: center;
+  width: 150px;
   top: 30px;
   left: 40px;
 }
