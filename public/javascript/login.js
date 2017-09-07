@@ -76,11 +76,16 @@ $(document).ready(function(){
     }
 
     function getAllAwardsSec(){
+      $('.awardBox').empty();
       $.ajax({
         type: "GET",
         url: '/everyaward'
         }).done((data)=>{
           data.forEach((el)=>{
+            let awardText = $('<div>').addClass('awardText').text(el.type)
+            let awardContainer = $('<div>').addClass('awardPassive')
+            awardContainer.append(awardText)
+            $('.awardBox').append(awardContainer)
           });
       }).fail((err)=>{
       })
@@ -116,10 +121,10 @@ $(document).ready(function(){
     }
 
     function getUserLocationSec(user_id){
+      $('.awardBox').empty();
       let userInput={
         user_id : user_id
       }
-
       $.ajax({
         contentType: 'application/json',
         type: "POST",
@@ -127,6 +132,13 @@ $(document).ready(function(){
         data: JSON.stringify(userInput),
         dataType: 'json'
       }).done((data)=>{
+        // console.log(data);
+        data.forEach((el)=>{
+          let tempText = $('<div>').addClass('placeText').text(el.place);
+          let tempBox = $('<div>').addClass('placeBox');
+          tempBox.append(tempText);
+          $('.awardBox').append(tempBox);
+        })
       }).fail((err)=>{
       })
     }
