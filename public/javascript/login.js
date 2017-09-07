@@ -3,26 +3,25 @@ var catetgoryType;
 $(document).ready(function(){
 
 // THIS CHANGES THE LOGIN BUTTON from login to continue if they aready have cookies (which they get from being logged in)---------------------------------------
-  $.ajax({
-    type: "GET",
-    url: '/continue'
-    })
-    .done((data) => {
-    if(data === "yes cookie"){
-      $('#login').html('Continue');
-    }
-    else if (data === "no cookie"){
-      $('#login').html('Login')
-    }
-    })
-    .fail(() => {
-    console.log('/GET not working');
-  });
+  // $.ajax({
+  //   type: "GET",
+  //   url: '/continue'
+  //   })
+  //   .done((data) => {
+  //   if(data === "yes cookie"){
+  //     $('#login').html('Continue');
+  //   }
+  //   else if (data === "no cookie"){
+  //     $('#login').html('Login')
+  //   }
+  //   })
+  //   .fail(() => {
+  //   console.log('/GET not working');
+  // });
 // // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
    $('#login').click(function(){
-
     var loggedin = false;
     var userInputs = {
        fb_id: '',
@@ -57,6 +56,8 @@ $(document).ready(function(){
     }
 
     $('#run_search_location').click(function(){
+        $(".instructionMsg").empty();
+        $(".instructionMsg").append('Select location to post to facebook')
         fblocation = $('#search_location').val();
         runAPI(access_token, fblocation);
         function runAPI(access_token, fblocation){
@@ -69,7 +70,7 @@ $(document).ready(function(){
             $('.locationList').empty();
             var locationContainer = $('<div>').addClass('locationContainer');
             result.data.forEach((el)=>{
-              let tempText = $('<div>').addClass('locationText').text(el.name).attr('place-text',el.name);
+              let tempText = $('<div>').addClass('locationText').text(el.name).attr('place-text',el.name).attr('element-id',el.id);
               let temp = $('<div>').addClass('locationBox').attr('element-id',el.id);
               temp.append(tempText);
               locationContainer.append(temp);
@@ -77,6 +78,7 @@ $(document).ready(function(){
             $('.locationList').append(locationContainer);
 
             $('.locationList').children().on('click',function(event){
+              $(".instructionMsg").empty();
               $('.locationList').empty();
               var $target = $(event.target);
               var place = ($target.attr('element-id'));
@@ -84,7 +86,7 @@ $(document).ready(function(){
               var route = 'states';
               var keyName = 'state_id'
               var message = 'testing: from my website';
-              postToFb(message, fb_id, place);
+              postToFb(message, fb_id, place, placeText);
               postCheckin(placeText, route, keyName);
             })
           })
@@ -95,6 +97,7 @@ $(document).ready(function(){
 
 function runRouteAfterLogin(userInputs, loginResponse){
     // post user fb token to db
+    $('#login').html('Continue');
     $.ajax({
       contentType: 'application/json',
       type: "POST",
@@ -124,7 +127,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
 }
 
 
-function postToFb(message, fb_id, place){
+function postToFb(message, fb_id, place, placeText){
     //post location checking to fb
     FB.api(
       '/'+fb_id+'/feed',
@@ -134,7 +137,17 @@ function postToFb(message, fb_id, place){
         "tags" : fb_id,
         "place": place
       }, function(response){
+        postedMsg(placeText)
+        setTimeout(clearMsg,10000)
       });
+}
+
+function postedMsg(placeText){
+  $('.postedMsg').append('Checked in to ',placeText,' with facebook!')
+}
+
+function clearMsg(){
+  $('.postedMsg').empty();
 }
 
 function postCheckin(placeText){
@@ -495,12 +508,12 @@ function defineAward(data){
   } else if (catetgoryType === 'city_all_abc'){
     return 'All alphabetic cities!'
   } else if (catetgoryType === 'city_3_vow'){
-    return 'city with 3 matching vowels'
+    return 'City with 3 matching vowels'
   } else if (catetgoryType === 'city_4_vow'){
-    return 'city with 3 matching vowels'
+    return 'City with 3 matching vowels'
   } else if (catetgoryType === 'city_3_let'){
-    return 'city with 3 matching letters'
+    return 'City with 3 matching letters'
   } else if (catetgoryType === 'city_4_let'){
-    return 'city with 5 matching letters'
+    return 'City with 5 matching letters'
   }
 }
