@@ -141,3 +141,9 @@ body{
   width: 100%;
   height: 40px;
 }
+
+.bottom-sec{
+  background-color: red;
+  height: 30px;
+  width: 100px;
+}

@@ -47,4 +47,15 @@ router.post('/assessawards', function(req, res, next) {
     })
 });
 
+router.post('/allplaces', function(req, res, next) {
+  knex('users_categories')
+    .where('user_id',req.body.user_id)
+    .then(function(result){
+      return res.send(result)
+    }).catch(function(err){
+      return res.send(err).status(200);
+    })
+});
+
+
 module.exports = router;
