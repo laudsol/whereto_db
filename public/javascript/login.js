@@ -82,7 +82,7 @@ $(document).ready(function(){
         url: '/everyaward'
         }).done((data)=>{
           data.forEach((el)=>{
-            let awardText = $('<div>').addClass('awardText').text(el.type)
+            let awardText = $('<div>').addClass('awardTextPassive').text(el.type)
             let awardContainer = $('<div>').addClass('awardPassive')
             awardContainer.append(awardText)
             $('.awardBox').append(awardContainer)
