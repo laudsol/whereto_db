@@ -3,21 +3,21 @@ var catetgoryType;
 $(document).ready(function(){
 
 // THIS CHANGES THE LOGIN BUTTON from login to continue if they aready have cookies (which they get from being logged in)---------------------------------------
-  $.ajax({
-    type: "GET",
-    url: '/continue'
-    })
-    .done((data) => {
-    if(data === "yes cookie"){
-      $('#login').html('Continue');
-    }
-    else if (data === "no cookie"){
-      $('#login').html('Login')
-    }
-    })
-    .fail(() => {
-    console.log('/GET not working');
-  });
+  // $.ajax({
+  //   type: "GET",
+  //   url: '/continue'
+  //   })
+  //   .done((data) => {
+  //   if(data === "yes cookie"){
+  //     $('#login').html('Continue');
+  //   }
+  //   else if (data === "no cookie"){
+  //     $('#login').html('Login')
+  //   }
+  //   })
+  //   .fail(() => {
+  //   console.log('/GET not working');
+  // });
 // // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -86,7 +86,7 @@ $(document).ready(function(){
               var route = 'states';
               var keyName = 'state_id'
               var message = 'testing: from my website';
-              // postToFb(message, fb_id, place, placeText);
+              postToFb(message, fb_id, place, placeText);
               postCheckin(placeText, route, keyName);
             })
           })
@@ -97,6 +97,7 @@ $(document).ready(function(){
 
 function runRouteAfterLogin(userInputs, loginResponse){
     // post user fb token to db
+    $('#login').html('Continue');
     $.ajax({
       contentType: 'application/json',
       type: "POST",
