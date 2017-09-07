@@ -1,5 +1,7 @@
 var user_id;
 var catetgoryType;
+// myStorage = localStorage;
+// localData = JSON.parse(localStorage['data']);
 $(document).ready(function(){
 
 // THIS CHANGES THE LOGIN BUTTON from login to continue if they aready have cookies (which they get from being logged in)---------------------------------------
@@ -41,6 +43,15 @@ $(document).ready(function(){
             fb_id = loginResponse;
             loggedin = true;
             runRouteAfterLogin(userInputs, loginResponse);
+            $('.awardSecAll').click(function(){
+              getAllAwardsSec();
+            });
+            $('.awardSecUser').click(function(){
+              getUserAwardsSec(user_id);
+            });
+            $('.locationSecUser').click(function(){
+              getUserLocationSec(user_id)
+            });
             return userInputs.fb_id;
           } else {
 
@@ -50,9 +61,86 @@ $(document).ready(function(){
                 userInputs.fb_id = loginResponse;
                 fb_id = loginResponse;
                 runRouteAfterLogin(userInputs, loginResponse)
+                $('.awardSecAll').click(function(){
+                  getAllAwardsSec();
+                });
+                $('.awardSecUser').click(function(){
+                  getUserAwardsSec(user_id);
+                });
+                $('.locationSecUser').click(function(){
+                  getUserLocationSec(user_id)
+                });
               },{scope: 'public_profile , publish_actions'})
           }
       });
+    }
+
+    function getAllAwardsSec(){
+      $('.awardBox').empty();
+      $.ajax({
+        type: "GET",
+        url: '/everyaward'
+        }).done((data)=>{
+          data.forEach((el)=>{
+            let awardText = $('<div>').addClass('awardTextPassive').text(el.type)
+            let awardContainer = $('<div>').addClass('awardPassive')
+            awardContainer.append(awardText)
+            $('.awardBox').append(awardContainer)
+          });
+      }).fail((err)=>{
+      })
+    }
+
+    function getUserAwardsSec(user_id){
+      let getAwards = {
+        user_id : user_id
+      }
+      // get all users awards for display
+      $.ajax({
+        contentType: 'application/json',
+        type: "POST",
+        url: '/allawards',
+        data: JSON.stringify(getAwards),
+        dataType: 'json'
+      }).done((data)=>{
+        $('.awardBox').empty();
+        let tempObj = {};
+        // place all types in object as keys and append keys to remove duplicates
+        data.forEach((el)=>{
+          tempObj[el.type] = 0;
+        })
+
+        for (var key in tempObj){
+          let awardText = $('<div>').addClass('awardText').text(key)
+          let awardContainer = $('<div>').addClass('award')
+          awardContainer.append(awardText)
+          $('.awardBox').append(awardContainer)
+        }
+      }).fail((err)=>{
+      })
+    }
+
+    function getUserLocationSec(user_id){
+      $('.awardBox').empty();
+      let userInput={
+        user_id : user_id
+      }
+      $.ajax({
+        contentType: 'application/json',
+        type: "POST",
+        url: '/allplaces',
+        data: JSON.stringify(userInput),
+        dataType: 'json'
+      }).done((data)=>{
+        // console.log(data);
+        data.forEach((el)=>{
+          let tempText = $('<div>').addClass('placeText').text(el.place);
+          let tempBox = $('<div>').addClass('placeBox');
+          tempBox.append(tempText);
+          $('.awardBox').append(tempBox);
+        })
+      }).fail((err)=>{
+      })
     }
 
     $('#run_search_location').click(function(){
@@ -107,7 +195,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
     })
     .done((data)=>{
       user_id = data.id;
-      getAllAwards(user_id)
+      getUserAwards(user_id)
     })
     .fail(() => {
       // if cannot post, get user id from db for matching fb token
@@ -119,7 +207,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
         })
         .done((data) => {
            user_id = data.id;
-           getAllAwards(user_id)
+           getUserAwards(user_id)
         })
         .fail(() => {
         });
@@ -244,7 +332,7 @@ function getAward(data){
           data: JSON.stringify(awardPost),
           dataType: 'json'
         }).done((data)=>{
-          getAllAwards(user_id);
+          getUserAwards(user_id);
         }).fail((err)=>{
         })
       }).fail((err)=>{
@@ -253,7 +341,7 @@ function getAward(data){
   })
 }
 
-function getAllAwards(user_id){
+function getUserAwards(user_id){
   let getAwards = {
     user_id : user_id
   }
@@ -265,6 +353,9 @@ function getAllAwards(user_id){
     data: JSON.stringify(getAwards),
     dataType: 'json'
   }).done((data)=>{
+    localStorage.setItem('data',JSON.stringify(data));
+    localData = JSON.parse(localStorage['data']);
+    // console.log(localData);
     addAwardsToPage(data)
   }).fail((err)=>{
   })

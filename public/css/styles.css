@@ -6,6 +6,7 @@ gold: #f7b52d
 white: #fde3aa
 orange: #f38321
 burnt: #f16635
+white: #FFFEE1
 
 Colors*/
 
@@ -26,14 +27,15 @@ body{
   left: 10px;
   z-index: 1;
 }
-
+.buttonBottomSection{
+    margin-top: 10px;
+}
 
 .awardBox{
-  border-top: solid 1px #66483d;
-  margin-top: 30px;
+  border-top: solid 2px #66483d;
   position: absolute;
   overflow: scroll;
-  height: 500px;
+  height: 300px;
 }
 
 .awardText{
@@ -49,6 +51,25 @@ body{
   height: 110px;
   border-radius: 50%;
   background-color: #f38321;
+  margin: 6px;
+  float: left;
+  padding: 5px;
+  border: solid #66483d 1px;
+}
+
+.awardTextPassive{
+  display: table-cell;
+  vertical-align: middle;
+  color: #FFFEE1;
+  text-align: center;
+}
+
+.awardPassive{
+  display: table;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: grey;
   margin: 6px;
   float: left;
   padding: 5px;
@@ -105,7 +126,7 @@ body{
 }
 
 .nav-brand-text:hover{
-  color: #f16635;
+  color: #66483d;
 }
 
 .nav-link-text{
@@ -140,4 +161,31 @@ body{
   border-style: solid;
   width: 100%;
   height: 40px;
+}
+
+.bottom-sec{
+  margin-top: 10px;
+  background-color: #f38321;
+  padding-top: 13px;
+  height: 50px;
+  font-size: 16px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.placeText{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.placeBox{
+  display: table;
+  background-color: #f16635;
+  width: 100%;
+  min-height: 50px;
+  border: 1px solid gray;
+  margin-top: 2px;
+  border-radius: 3px;
 }
