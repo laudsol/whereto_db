@@ -17,7 +17,6 @@ body{
 
 .awardBox{
   position: absolute;
-  top: 180px;
   overflow: scroll;
   height: 500px;
 }
@@ -81,17 +80,32 @@ body{
   background-color: #4c988c;
 }
 
-/*.navbar .navbar-inverse{
-}*/
-
 .navbar{
   background-color: #f38321;
 }
+
 
 .nav-brand-text{
   color: #66483d;
   font-size: 35px;
   text-decoration: none !important;
+}
+
+.nav-brand-text:hover{
+  color: #f16635;
+}
+
+.nav-link-text{
+  margin-top: 10px;
+  margin-left: 8px;
+  float: right;
+  color: #66483d;
+  font-size: 20px;
+  text-decoration: none !important;
+}
+
+.nav-link-text:hover{
+  color: #f16635;
 }
 
 #login{
