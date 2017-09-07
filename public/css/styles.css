@@ -22,11 +22,13 @@ body{
 }
 
 .postedMsg{
-  position: relative;
+  position: absolute;
   left: 10px;
+  z-index: 1;
 }
 
 .awardBox{
+  margin-top: 20px;
   position: absolute;
   overflow: scroll;
   height: 500px;
