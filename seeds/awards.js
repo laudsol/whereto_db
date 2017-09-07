@@ -8,8 +8,8 @@ exports.seed = function(knex, Promise) {
         {id: 4, type: 'All alphabetic cities!'},
         {id: 5, type: 'city with 3 matching vowels'},
         {id: 6, type: 'city with 4 matching vowels'},
-        {id: 7, type: 'city with 4 matching letters'},
-        {id: 8, type: 'city with 5 matching letters'},
+        {id: 7, type: 'city with 3 matching letters'},
+        {id: 8, type: 'city with 4 matching letters'},
         {id: 10, type: 'States: 2!'},
         {id: 11, type: 'States: 10!'},
         {id: 12, type: 'States: 20!'},
@@ -22,7 +22,7 @@ exports.seed = function(knex, Promise) {
         {id: 20, type: 'State Park Badge'},
         {id: 21, type: 'State Park Frequentor'},
         {id: 22, type: 'State Park Buff'},
-        {id: 23, type: 'National Grasslands Park Badge'},
+        {id: 23, type: 'National Grasslands Badge'},
         {id: 24, type: 'National Grasslands Frequentor'},
         {id: 25, type: 'National Grasslands Buff'},
         {id: 26, type: 'National Monument Badge'},
@@ -35,7 +35,13 @@ exports.seed = function(knex, Promise) {
         {id: 33, type: 'Library Worm'},
         {id: 34, type: 'Nerd'},
         {id: 35, type: 'Beach Badge'},
-        {id: 36, type: 'Beach Bum'}
+        {id: 36, type: 'Beach Bum'},
+        {id: 37, type: 'Indian Reservation Badge'},
+        {id: 38, type: 'Indian Reservation Frequentor'},
+        {id: 39, type: 'Indian Reservation Buff'},
+        {id: 40, type: 'Museum Badge'},
+        {id: 41, type: 'Museum Frequentor'},
+        {id: 42, type: 'Museum Buff'},
       ]);
     })
     .then(function(){

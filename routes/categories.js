@@ -39,6 +39,7 @@ router.post('/assessawards', function(req, res, next) {
   knex('users_categories')
     .where('category_id',req.body.category_id)
     .where('user_id',req.body.user_id)
+    .returning('id','user_id','place','category_id')
     .then(function(result){
       return res.send(result)
     }).catch(function(err){
