@@ -27,8 +27,10 @@ body{
   z-index: 1;
 }
 
+
 .awardBox{
-  margin-top: 20px;
+  border-top: solid 1px #66483d;
+  margin-top: 30px;
   position: absolute;
   overflow: scroll;
   height: 500px;
@@ -47,7 +49,7 @@ body{
   height: 110px;
   border-radius: 50%;
   background-color: #f38321;
-  margin: 10px;
+  margin: 6px;
   float: left;
   padding: 5px;
   border: solid #66483d 1px;
