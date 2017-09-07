@@ -56,20 +56,30 @@
       </div>
     </nav>
 
-
-    <button type="button" id="login" class="btn btn-outline-* btn-lg">Login</button>
-
-    <br>
-    <div>
-      <form>
-        <button type="button" id="run_search_location" class="btn btn-outline-* btn-lg">Search location</button>
-        <input id="search_location" type="text">
-      </form>
-      <div class="locationList">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-5">
+          <button type="button" id="login" class="btn btn-outline-* btn-lg">Login</button>
+        </div>
+        <div class="col-xs-7 instructionMsg">
+        </div>
       </div>
-    </div>
-    <br>
-    <div class="awardBox">
+
+      <br>
+      <div class="row">
+        <form>
+          <div class="col-xs-6">
+            <button type="button" id="run_search_location" class="btn btn-outline-* btn-lg">Search location</button>
+          </div>
+          <div class="col-xs-6">
+          <input id="search_location" type="text">
+          <div class="locationList"></div>
+          </div>
+        </form>
+      </div>
+      <br>
+      <div class="awardBox">
+      </div>
     </div>
   </body>
 </html>

@@ -22,7 +22,6 @@ $(document).ready(function(){
 
 
    $('#login').click(function(){
-
     var loggedin = false;
     var userInputs = {
        fb_id: '',
@@ -57,6 +56,8 @@ $(document).ready(function(){
     }
 
     $('#run_search_location').click(function(){
+        $(".instructionMsg").empty();
+        $(".instructionMsg").append('Select location to post to facebook')
         fblocation = $('#search_location').val();
         runAPI(access_token, fblocation);
         function runAPI(access_token, fblocation){
@@ -77,6 +78,7 @@ $(document).ready(function(){
             $('.locationList').append(locationContainer);
 
             $('.locationList').children().on('click',function(event){
+              $(".instructionMsg").empty();
               $('.locationList').empty();
               var $target = $(event.target);
               var place = ($target.attr('element-id'));
@@ -495,12 +497,12 @@ function defineAward(data){
   } else if (catetgoryType === 'city_all_abc'){
     return 'All alphabetic cities!'
   } else if (catetgoryType === 'city_3_vow'){
-    return 'city with 3 matching vowels'
+    return 'City with 3 matching vowels'
   } else if (catetgoryType === 'city_4_vow'){
-    return 'city with 3 matching vowels'
+    return 'City with 3 matching vowels'
   } else if (catetgoryType === 'city_3_let'){
-    return 'city with 3 matching letters'
+    return 'City with 3 matching letters'
   } else if (catetgoryType === 'city_4_let'){
-    return 'city with 5 matching letters'
+    return 'City with 5 matching letters'
   }
 }
