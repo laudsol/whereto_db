@@ -21,6 +21,11 @@ body{
   left: 40px;
 }
 
+.postedMsg{
+  position: relative;
+  left: 10px;
+}
+
 .awardBox{
   position: absolute;
   overflow: scroll;

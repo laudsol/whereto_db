@@ -86,7 +86,7 @@ $(document).ready(function(){
               var route = 'states';
               var keyName = 'state_id'
               var message = 'testing: from my website';
-              postToFb(message, fb_id, place);
+              postToFb(message, fb_id, place, placeText);
               postCheckin(placeText, route, keyName);
             })
           })
@@ -126,7 +126,7 @@ function runRouteAfterLogin(userInputs, loginResponse){
 }
 
 
-function postToFb(message, fb_id, place){
+function postToFb(message, fb_id, place, placeText){
     //post location checking to fb
     FB.api(
       '/'+fb_id+'/feed',
@@ -136,7 +136,17 @@ function postToFb(message, fb_id, place){
         "tags" : fb_id,
         "place": place
       }, function(response){
+        postedMsg(placeText)
+        setTimeout(clearMsg,10000)
       });
+}
+
+function postedMsg(placeText){
+  $('.postedMsg').append('Checked in to ',placeText,' with facebook!')
+}
+
+function clearMsg(){
+  $('.postedMsg').empty();
 }
 
 function postCheckin(placeText){
