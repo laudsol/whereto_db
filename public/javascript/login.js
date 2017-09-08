@@ -166,7 +166,8 @@ $(document).ready(function(){
             $('.locationList').append(locationContainer);
 
             $('.locationList').children().on('click',function(event){
-              $(".instructionMsg").empty();
+              $('#search_location').val('');
+              $('.instructionMsg').empty();
               $('.locationList').empty();
               var $target = $(event.target);
               var place = ($target.attr('element-id'));
