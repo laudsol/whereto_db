@@ -168,12 +168,16 @@ body{
 }
 
 #login{
+  font-family: 'Play', sans-serif;
+  font-weight: bold;
   background-color: #f77c36;
   margin-left: 2%;
   margin-bottom: 2%;
 }
 
 #run_search_location{
+  font-family: 'Play', sans-serif;
+  font-weight: bold;
   background-color: #f8b73c;
 }
 
@@ -189,6 +193,8 @@ body{
 }
 
 .bottom-sec{
+  font-family: 'Play', sans-serif;
+  font-weight: bold;
   margin-top: 10px;
   background-color: rgba(36,71,105,.7);
   color: #f5e6c8;
