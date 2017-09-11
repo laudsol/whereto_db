@@ -33,9 +33,7 @@ body{
 .instructionMsg{
   position: relative;
   text-align: center;
-  width: 150px;
   top: 30px;
-  left: 40px;
 }
 
 .postedMsg{
